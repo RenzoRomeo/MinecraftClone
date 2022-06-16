@@ -6,6 +6,9 @@ namespace MinecraftClone
 {
 	struct Window
 	{
+		Window(int width, int height, const char* title, bool fullscreen = false);
+		~Window();
+
 		GLFWwindow* nativeWindow;
 		int windowWidth;
 		int windowHeight;

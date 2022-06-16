@@ -19,20 +19,20 @@ int main()
 {
 	glfwInit();
 
-	Window* window = Window::createWindow(width, height, title);
-	if (window == nullptr)
+	Window window(width, height, title);
+	if (window.nativeWindow == nullptr)
 	{
 		return exitWithError("Failed to create GLFW window.\n");
 	}
-	window->setCallbacks();
+	window.setCallbacks();
 
 	if (!gladLoadGL())
 	{
 		return exitWithError("Failed to initialize GLAD.\n");
 	}
 	
-	glViewport(0, 0, window->windowWidth, window->windowHeight);
-	while (!glfwWindowShouldClose(window->nativeWindow))
+	glViewport(0, 0, window.windowWidth, window.windowHeight);
+	while (!glfwWindowShouldClose(window.nativeWindow))
 	{
 		// Clear screen
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -41,11 +41,10 @@ int main()
 		if (Input::isKeyDown(GLFW_KEY_E))
 			std::cout << "E\n.";
 
-		glfwSwapBuffers(window->nativeWindow);
+		glfwSwapBuffers(window.nativeWindow);
 		glfwPollEvents();
 	}
 
-	Window::freeWindow(window);
 	glfwTerminate();
 	return 0;
 }
