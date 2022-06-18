@@ -14,7 +14,7 @@ namespace MinecraftClone
         void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
         {
             if (key >= 0 && key < GLFW_KEY_LAST)
-                keyPressedData[key] = action == GLFW_PRESS;
+                keyPressedData[key] = action == GLFW_PRESS || action == GLFW_REPEAT;
         }
 
         void mouseCallback(GLFWwindow* window, double xpos, double ypos)

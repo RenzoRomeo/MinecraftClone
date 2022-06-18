@@ -4,6 +4,8 @@
 #include "Window.h"
 #include "Shader.h"
 
+#include "Camera.h"
+
 
 namespace MinecraftClone
 {
@@ -68,10 +70,11 @@ namespace MinecraftClone
 				glm::vec2(1.0f, 1.0f),
 				glm::vec2(0.0f, 1.0f),
 				glm::vec2(0.0f, 0.0f),
-			
+
 				glm::vec2(1.0f, 1.0f),
 				glm::vec2(1.0f, 0.0f),
 				glm::vec2(0.0f, 0.0f),
+				
 			};
 
 			for (int vertexIndex = 0; vertexIndex < cubeElements.size(); vertexIndex++)
@@ -205,18 +208,24 @@ namespace MinecraftClone
 			texturedCubeShader.free();
 		}
 
+		Camera camera;
+
 		void update(float dt)
 		{
 			texturedCubeShader.use();
-			static glm::vec3 eye = glm::vec3();
-			static float eyeRotation = 45.0f;
-			if (!Input::isKeyDown(GLFW_KEY_SPACE))
-				eyeRotation += 30.0f * dt;
-			eye = glm::vec3(glm::sin(glm::radians(eyeRotation)) * 7.0f, 5.0f, glm::cos(glm::radians(eyeRotation)));
-			glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);
-			glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-			glm::mat4 view = glm::lookAt(eye, center, up);
-			texturedCubeShader.setUniformMat4f("uView", view);
+
+			camera.setdt(dt);
+
+			if (Input::isKeyDown(GLFW_KEY_D))
+				camera.rotateRight();
+			else if (Input::isKeyDown(GLFW_KEY_A))
+				camera.rotateLeft();
+			else if (Input::isKeyDown(GLFW_KEY_W))
+				camera.moveForward();
+			else if (Input::isKeyDown(GLFW_KEY_S))
+				camera.moveBackwards();
+
+			texturedCubeShader.setUniformMat4f("uView", camera.getView());
 			texturedCubeShader.setUniformMat4f("uProjection", projection);
 			for (int i = 0; i < cubePositions.size(); i++)
 			{
