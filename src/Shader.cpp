@@ -1,4 +1,10 @@
 #include "Shader.h"
+#include "core.h"
+
+Shader::Shader()
+{
+
+}
 
 Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 {
@@ -45,7 +51,7 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment, 1, &fShaderCode, NULL);
     glCompileShader(fragment);
-    checkCompileErrors(vertex, "FRAGMENT");
+    checkCompileErrors(fragment, "FRAGMENT");
 
     ID = glCreateProgram();
     glAttachShader(ID, vertex);
@@ -55,11 +61,6 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 
     glDeleteShader(vertex);
     glDeleteShader(fragment);
-}
-
-Shader::~Shader()
-{
-    glDeleteProgram(ID);
 }
 
 void Shader::use()
@@ -113,4 +114,9 @@ void Shader::checkCompileErrors(unsigned int shader, const std::string& type)
             std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
         }
     }
+}
+
+void Shader::free()
+{
+    glDeleteProgram(ID);
 }
