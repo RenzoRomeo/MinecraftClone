@@ -1,61 +1,77 @@
 #include "Camera.h"
 
-Camera::Camera()
-    : position(glm::vec3(0, 2, 0)), dir(glm::vec3(1.0, 0.0, 0.0)), up(glm::vec3(0, 1, 0)),
-    rotationSpeed(250.0f), movementSpeed(5.0f)
+namespace MinecraftClone
 {
-}
+	Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
+		: MovementSpeed(2.5f), MouseSensitivity(0.1f)
+	{
+		Position = position;
+		WorldUp = up;
+		Yaw = yaw;
+		Pitch = pitch;
+		updateCameraVectors();
+	}
 
-glm::mat4 Camera::getView() const
-{
-    return glm::lookAt(position, position + dir, up);
-}
+	Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch)
+		: MovementSpeed(2.5f), MouseSensitivity(0.1f)
+	{
+		Position = glm::vec3(posX, posY, posZ);
+		WorldUp = glm::vec3(upX, upY, upZ);
+		Yaw = yaw;
+		Pitch = pitch;
+		updateCameraVectors();
+	}
 
-void Camera::rotateRight()
-{
-    dir = glm::rotate(dir, glm::radians(-rotationSpeed * dt), glm::vec3(0, 1, 0));
-}
+	glm::mat4 Camera::getView() const
+	{
+		return glm::lookAt(Position, Position + Front, Up);
+	}
 
-void Camera::rotateLeft()
-{
-    dir = glm::rotate(dir, glm::radians(rotationSpeed * dt), glm::vec3(0, 1, 0));
-}
+	void Camera::setdt(float dt)
+	{
+		this->dt = dt;
+	}
+	void Camera::processKeyboard(CameraMovement direction)
+	{
+		float velocity = MovementSpeed * dt;
+		if (direction == CameraMovement::FORWARD)
+			Position += Front * velocity;
+		if (direction == CameraMovement::BACKWARD)
+			Position -= Front * velocity;
+		if (direction == CameraMovement::RIGHT)
+			Position += Right * velocity;
+		if (direction == CameraMovement::LEFT)
+			Position -= Right * velocity;
+	}
 
-void Camera::rotateUp()
-{
-    glm::vec3 axis = glm::cross(up, dir);
-    dir = glm::rotate(dir, glm::radians(rotationSpeed * dt), axis);
-}
+	void Camera::processMouse(float xoffset, float yoffset, GLboolean contrainPitch)
+	{
+		xoffset *= MouseSensitivity;
+		yoffset *= MouseSensitivity;
 
-void Camera::rotateDown()
-{
-    glm::vec3 axis = glm::cross(up, dir);
-    dir = glm::rotate(dir, glm::radians(-rotationSpeed * dt), axis);
-}
+		Yaw += xoffset;
+		Pitch += yoffset;
 
-void Camera::moveForward()
-{
-    position += glm::normalize(dir) * movementSpeed * dt;
-}
+		if (contrainPitch)
+		{
+			if (Pitch > 89.0f)
+				Pitch = 89.0f;
+			if (Pitch < -89.0f)
+				Pitch = -89.0f;
+		}
 
-void Camera::moveBackwards()
-{
-    position -= glm::normalize(dir) * movementSpeed * dt;
-}
+		updateCameraVectors();
+	}
 
-void Camera::moveLeft()
-{
-    glm::vec3 axis = glm::cross(up, dir);
-    position += axis * movementSpeed * dt;
-}
+	void Camera::updateCameraVectors()
+	{
+		glm::vec3 newDir;
+		newDir.x = glm::cos(glm::radians(Yaw)) * glm::cos(glm::radians(Pitch));
+		newDir.y = glm::sin(glm::radians(Pitch));
+		newDir.z = glm::sin(glm::radians(Yaw)) * glm::cos(glm::radians(Pitch));
 
-void Camera::moveRight()
-{
-    glm::vec3 axis = glm::cross(up, dir);
-    position -= axis * movementSpeed * dt;
-}
-
-void Camera::setdt(float dt)
-{
-    this->dt = dt;
+		Front = glm::normalize(newDir);
+		Right = glm::normalize(glm::cross(Front, WorldUp));
+		Up = glm::normalize(glm::cross(Right, Front));
+	}
 }

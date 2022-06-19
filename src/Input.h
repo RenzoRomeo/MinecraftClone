@@ -13,10 +13,8 @@ namespace MinecraftClone
 		extern float mouseY;
 		extern float mouseScrollX;
 		extern float mouseScrollY;
-		extern bool movingLeft;
-		extern bool movingRight;
-		extern bool movingUp;
-		extern bool movingDown;
+		extern float xOffset;
+		extern float yOffset;
 
 		void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 		void mouseCallback(GLFWwindow* window, double xpos, double ypos);
@@ -26,6 +24,6 @@ namespace MinecraftClone
 		bool isKeyDown(int key);
 		bool isMouseButtonDown(int mouseButton);
 
-		void resetMouse();
+		void resetMouseOffsets();
 	}
 }

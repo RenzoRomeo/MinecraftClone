@@ -1,24 +1,42 @@
 #include "core.h"
 
-struct Camera
+
+namespace MinecraftClone
 {
-	glm::vec3 position;
-	glm::vec3 dir;
-	glm::vec3 up;
-	float dt;
-	float rotationSpeed;
-	float movementSpeed;
+	enum class CameraMovement
+	{
+		FORWARD,
+		BACKWARD,
+		LEFT,
+		RIGHT
+	};
 
-	Camera();
+	class Camera
+	{
+	public:
+		glm::vec3 Position;
+		glm::vec3 Front;
+		glm::vec3 Up;
+		glm::vec3 Right;
+		glm::vec3 WorldUp;
 
-	glm::mat4 getView() const;
-	void rotateRight();
-	void rotateLeft();
-	void rotateUp();
-	void rotateDown();
-	void moveForward();
-	void moveBackwards();
-	void moveLeft();
-	void moveRight();
-	void setdt(float dt);
-};
+		float Pitch;
+		float Yaw;
+
+		float dt;
+		float MouseSensitivity;
+		float MovementSpeed;
+
+		Camera(glm::vec3 position = glm::vec3(0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f, float pitch = 0.0f);
+		Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
+
+		glm::mat4 getView() const;
+		void setdt(float dt);
+
+		void processKeyboard(CameraMovement direction);
+		void processMouse(float xoffset, float yoffset, GLboolean contrainPitch = true);
+
+	private:
+		void updateCameraVectors();
+	};
+}

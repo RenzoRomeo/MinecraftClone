@@ -3,7 +3,7 @@
 namespace MinecraftClone
 {
 	World::World(Window* window)
-		: camera(Camera()), renderer(Renderer(window, &camera))
+		: camera(Camera({ 0,0,0 }, { 0,1,0 })), renderer(Renderer(window, &camera))
 	{
 		defaultScene();
 	}
@@ -36,11 +36,11 @@ namespace MinecraftClone
 		{
 			for (int z = 0; z < 10; z++)
 			{
-				Cube cube(glm::vec3(x - 5, 0, z - 5), { 2,2 });
+				Cube cube(glm::vec3(x - 5, 0, z - 5), { 2,3 });
 
 				if (rand() % 10 > 8)
 				{
-					Cube cube(glm::vec3(x - 5, rand() % 3, z - 5), { 0, 3 });
+					Cube cube(glm::vec3(x - 5, rand() % 3, z - 5), { 0, 2 });
 					addCube(cube);
 				}
 
@@ -50,24 +50,16 @@ namespace MinecraftClone
 	}
 	void World::userInput()
 	{
-		if (Input::movingUp)
-			camera.rotateUp();
-		if (Input::movingDown)
-			camera.rotateDown();
-		if (Input::movingLeft)
-			camera.rotateLeft();
-		if (Input::movingRight)
-			camera.rotateRight();
-
-		Input::resetMouse();
+		camera.processMouse(Input::xOffset, Input::yOffset);
+		Input::resetMouseOffsets();
 
 		if (Input::isKeyDown(GLFW_KEY_W))
-			camera.moveForward();
+			camera.processKeyboard(CameraMovement::FORWARD);
 		if (Input::isKeyDown(GLFW_KEY_S))
-			camera.moveBackwards();
+			camera.processKeyboard(CameraMovement::BACKWARD);
 		if (Input::isKeyDown(GLFW_KEY_A))
-			camera.moveLeft();
+			camera.processKeyboard(CameraMovement::LEFT);
 		if (Input::isKeyDown(GLFW_KEY_D))
-			camera.moveRight();
+			camera.processKeyboard(CameraMovement::RIGHT);
 	}
 }

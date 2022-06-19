@@ -215,25 +215,25 @@ namespace MinecraftClone
 
 			camera.setdt(dt);
 
-			if (Input::movingUp)
-				camera.rotateUp();
-			if (Input::movingDown)
-				camera.rotateDown();
-			if (Input::movingLeft)
-				camera.rotateLeft();
-			if (Input::movingRight)
-				camera.rotateRight();
-
-			Input::resetMouse();
-
-			if (Input::isKeyDown(GLFW_KEY_W))
-				camera.moveForward();
-			if (Input::isKeyDown(GLFW_KEY_S))
-				camera.moveBackwards();
-			if (Input::isKeyDown(GLFW_KEY_A))
-				camera.moveLeft();
-			if (Input::isKeyDown(GLFW_KEY_D))
-				camera.moveRight();
+			// if (Input::movingUp)
+			// 	camera.rotateUp();
+			// if (Input::movingDown)
+			// 	camera.rotateDown();
+			// if (Input::movingLeft)
+			// 	camera.rotateLeft();
+			// if (Input::movingRight)
+			// 	camera.rotateRight();
+			// 
+			// Input::resetMouse();
+			// 
+			// if (Input::isKeyDown(GLFW_KEY_W))
+			// 	camera.moveForward();
+			// if (Input::isKeyDown(GLFW_KEY_S))
+			// 	camera.moveBackwards();
+			// if (Input::isKeyDown(GLFW_KEY_A))
+			// 	camera.moveLeft();
+			// if (Input::isKeyDown(GLFW_KEY_D))
+			// 	camera.moveRight();
 
 			texturedCubeShader.setUniformMat4f("uView", camera.getView());
 			texturedCubeShader.setUniformMat4f("uProjection", projection);

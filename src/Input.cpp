@@ -10,10 +10,8 @@ namespace MinecraftClone
         float mouseY = 0.0f;
         float mouseScrollX = 0.0f;
         float mouseScrollY = 0.0f;
-        bool movingLeft = false;
-        bool movingRight = false;
-        bool movingUp = false;
-        bool movingDown = false;
+        float xOffset = 0.0f;
+        float yOffset = 0.0f;
 
         void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
         {
@@ -23,10 +21,8 @@ namespace MinecraftClone
 
         void mouseCallback(GLFWwindow* window, double xpos, double ypos)
         {
-            movingLeft = (float)xpos < mouseX;
-            movingRight = (float)xpos > mouseX;
-            movingUp = (float)ypos > mouseY;
-            movingDown = (float)ypos < mouseY;
+            xOffset = xpos - mouseX;
+            yOffset = mouseY - ypos;
 
             mouseX = (float)xpos;
             mouseY = (float)ypos;
@@ -60,12 +56,9 @@ namespace MinecraftClone
             return false;
         }
 
-        void resetMouse()
-        {
-            movingLeft = false;
-            movingRight = false;
-            movingUp = false;
-            movingDown = false;
+        void resetMouseOffsets() {
+            xOffset = 0.0f;
+            yOffset = 0.0f;
         }
     }
 }
