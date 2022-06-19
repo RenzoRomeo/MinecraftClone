@@ -41,7 +41,7 @@ namespace MinecraftClone
 		for (int vertexIndex = 0; vertexIndex < cubeElements.size(); vertexIndex++)
 		{
 			cube_vertices[vertexIndex].position = vertices[cubeElements[vertexIndex]];
-			cube_vertices[vertexIndex].texCoord = texCoords[vertexIndex % 6];
+			cube_vertices[vertexIndex].tex_coords = texCoords[vertexIndex % 6];
 		}
 
 		float windowAspect = ((float)window->window_width / (float)window->window_height);
@@ -60,7 +60,7 @@ namespace MinecraftClone
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, position));
 		glEnableVertexAttribArray(0);
 
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, texCoord));
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, tex_coords));
 		glEnableVertexAttribArray(1);
 
 		LoadAtlas("res/images/blocks.png", atlas_w, atlas_h);
@@ -93,7 +93,7 @@ namespace MinecraftClone
 		shader.SetUniform1i("uAtlasH", atlas_h);
 		shader.SetUniform1i("uAtlasSpriteSize", sprite_size);
 
-		shader.SetUniformVec2f("uAtlasCoord", cube.atlasCoord);
+		shader.SetUniformVec2f("uAtlasCoord", cube.atlas_coords);
 
 		glBindVertexArray(vao);
 		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)cube_vertices.size());
