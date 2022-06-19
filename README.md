@@ -12,6 +12,7 @@ Minecraft clone made for educational purposes.
 - Chunks.
 - Procedural terrain generation.
 - Lighting.
+- Consistent naming style.
 
 # BUGS
 
