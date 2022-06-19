@@ -4,10 +4,12 @@ Minecraft clone made for educational purposes.
 
 # TODO
 
-- Create classes for every type of cube, each one with their atlas coordinates.
-- Create player.
-- Create chunks.
-- Make world a collection chunks.
+- Classes for every type of cube, each one with their atlas coordinates.
+- Player.
+- Only render visible blocks.
+- Placing/removing blocks.
+- Inventory.
+- Chunks.
 - Procedural terrain generation.
 - Lighting.
 
