@@ -12,9 +12,8 @@ Minecraft clone made for educational purposes.
 - Chunks.
 - Procedural terrain generation.
 - Lighting.
+- Consistent naming style.
 
 # BUGS
 
 - Broken textures.
-- Camera movement is slower when looking down/up.
-- Camera glitches when looking down/up directly.
