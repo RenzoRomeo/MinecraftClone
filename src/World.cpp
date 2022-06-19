@@ -21,7 +21,7 @@ namespace MinecraftClone
 
 		for (const auto& cube : cubes)
 		{
-			renderer.drawCube(cube);
+			renderer.DrawCube(cube);
 		}
 	}
 

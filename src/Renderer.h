@@ -4,7 +4,6 @@
 #include "Window.h"
 #include "Cube.h"
 #include "Camera.h"
-#include "Textures.h"
 
 namespace MinecraftClone
 {
@@ -14,11 +13,11 @@ namespace MinecraftClone
 		Camera* camera;
 		Shader shader;
 		Window* window;
-		uint32_t VAO, VBO;
+		uint32_t vao, vbo;
 
-		int atlasW, atlasH, spriteSize;
-		uint32_t atlasID;
-		std::array<Vertex, 36> cubeVertices;
+		int atlas_w, atlas_h, sprite_size;
+		uint32_t atlas_id;
+		std::array<Vertex, 36> cube_vertices;
 
 		glm::mat4 projection;
 
@@ -26,9 +25,9 @@ namespace MinecraftClone
 		Renderer(Window* window, Camera* camera);
 		~Renderer();
 
-		void drawCube(const Cube& cube);
+		void DrawCube(const Cube& cube);
 
 	private:
-		void loadAtlas(const std::string& path, int& width, int& height);
+		void LoadAtlas(const std::string& path, int& width, int& height);
 	};
 }

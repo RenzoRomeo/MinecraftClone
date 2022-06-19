@@ -2,7 +2,6 @@
 
 #include "core.h"
 #include "Shader.h"
-#include "Textures.h"
 
 namespace MinecraftClone
 {

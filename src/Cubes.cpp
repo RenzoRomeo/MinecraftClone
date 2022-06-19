@@ -99,13 +99,13 @@ namespace MinecraftClone
 		void drawCube(const glm::vec3& position, const Texture& texture)
 		{
 			glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
-			texturedCubeShader.setUniformMat4f("uModel", model);
+			texturedCubeShader.SetUniformMat4f("uModel", model);
 
 			int textureSlot = 0;
 
 			glActiveTexture(GL_TEXTURE0 + textureSlot);
 			glBindTexture(GL_TEXTURE_2D, texture.textureId);
-			texturedCubeShader.setUniform1i("uTexture", textureSlot);
+			texturedCubeShader.SetUniform1i("uTexture", textureSlot);
 
 			glBindVertexArray(defaultCube.VAO);
 			glDrawArrays(GL_TRIANGLES, 0, (GLsizei)defaultCube.vertices.size());
@@ -204,7 +204,7 @@ namespace MinecraftClone
 				destroyTexture(texture);
 			}
 
-			texturedCubeShader.free();
+			texturedCubeShader.Free();
 		}
 
 		Camera camera;
@@ -235,8 +235,8 @@ namespace MinecraftClone
 			// if (Input::isKeyDown(GLFW_KEY_D))
 			// 	camera.moveRight();
 
-			texturedCubeShader.setUniformMat4f("uView", camera.GetView());
-			texturedCubeShader.setUniformMat4f("uProjection", projection);
+			texturedCubeShader.SetUniformMat4f("uView", camera.GetView());
+			texturedCubeShader.SetUniformMat4f("uProjection", projection);
 			for (int i = 0; i < cubePositions.size(); i++)
 			{
 				drawCube(cubePositions[i], textures.at(cubeTextures.at(i)));

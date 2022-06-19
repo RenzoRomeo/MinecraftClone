@@ -40,8 +40,8 @@ namespace MinecraftClone
 
 		for (int vertexIndex = 0; vertexIndex < cubeElements.size(); vertexIndex++)
 		{
-			cubeVertices[vertexIndex].position = vertices[cubeElements[vertexIndex]];
-			cubeVertices[vertexIndex].texCoord = texCoords[vertexIndex % 6];
+			cube_vertices[vertexIndex].position = vertices[cubeElements[vertexIndex]];
+			cube_vertices[vertexIndex].texCoord = texCoords[vertexIndex % 6];
 		}
 
 		float windowAspect = ((float)window->window_width / (float)window->window_height);
@@ -50,12 +50,12 @@ namespace MinecraftClone
 		float zFar = 10000.0f;
 		projection = glm::perspective(fov, windowAspect, zNear, zFar);
 
-		glGenVertexArrays(1, &VAO);
-		glBindVertexArray(VAO);
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
 
-		glGenBuffers(1, &VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * cubeVertices.size(), cubeVertices.data(), GL_STATIC_DRAW);
+		glGenBuffers(1, &vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * cube_vertices.size(), cube_vertices.data(), GL_STATIC_DRAW);
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, position));
 		glEnableVertexAttribArray(0);
@@ -63,43 +63,43 @@ namespace MinecraftClone
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, texCoord));
 		glEnableVertexAttribArray(1);
 
-		loadAtlas("res/images/blocks.png", atlasW, atlasH);
-		spriteSize = 16;
+		LoadAtlas("res/images/blocks.png", atlas_w, atlas_h);
+		sprite_size = 16;
 	}
 
 	Renderer::~Renderer()
 	{
-		glDeleteBuffers(1, &VBO);
-		glDeleteVertexArrays(1, &VAO);
-		glDeleteTextures(1, &atlasID);
+		glDeleteBuffers(1, &vbo);
+		glDeleteVertexArrays(1, &vao);
+		glDeleteTextures(1, &atlas_id);
 	}
 
-	void Renderer::drawCube(const Cube& cube)
+	void Renderer::DrawCube(const Cube& cube)
 	{
 		shader.use();
-		shader.setUniformMat4f("uView", camera->GetView());
-		shader.setUniformMat4f("uProjection", projection);
+		shader.SetUniformMat4f("uView", camera->GetView());
+		shader.SetUniformMat4f("uProjection", projection);
 
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), cube.position);
-		shader.setUniformMat4f("uModel", model);
+		shader.SetUniformMat4f("uModel", model);
 
 		int textureSlot = 0;
 
 		glActiveTexture(GL_TEXTURE0 + textureSlot);
-		glBindTexture(GL_TEXTURE_2D, atlasID);
-		shader.setUniform1i("uTexture", textureSlot);
+		glBindTexture(GL_TEXTURE_2D, atlas_id);
+		shader.SetUniform1i("uTexture", textureSlot);
 
-		shader.setUniform1i("uAtlasW", atlasW);
-		shader.setUniform1i("uAtlasH", atlasH);
-		shader.setUniform1i("uAtlasSpriteSize", spriteSize);
+		shader.SetUniform1i("uAtlasW", atlas_w);
+		shader.SetUniform1i("uAtlasH", atlas_h);
+		shader.SetUniform1i("uAtlasSpriteSize", sprite_size);
 
-		shader.setUniformVec2f("uAtlasCoord", cube.atlasCoord);
+		shader.SetUniformVec2f("uAtlasCoord", cube.atlasCoord);
 
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)cubeVertices.size());
+		glBindVertexArray(vao);
+		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)cube_vertices.size());
 	}
 
-	void Renderer::loadAtlas(const std::string& path, int& width, int& height)
+	void Renderer::LoadAtlas(const std::string& path, int& width, int& height)
 	{
 		int numChannels;
 
@@ -119,8 +119,8 @@ namespace MinecraftClone
 			return;
 		}
 		
-		glGenTextures(1, &atlasID);
-		glBindTexture(GL_TEXTURE_2D, atlasID);
+		glGenTextures(1, &atlas_id);
+		glBindTexture(GL_TEXTURE_2D, atlas_id);
 		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

@@ -471,7 +471,6 @@
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
-    <ClInclude Include="src\Textures.h" />
     <ClInclude Include="src\Window.h" />
     <ClInclude Include="src\World.h" />
   </ItemGroup>
