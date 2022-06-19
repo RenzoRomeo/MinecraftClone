@@ -2,6 +2,7 @@
 
 #include "core.h"
 #include "Shader.h"
+#include "Textures.h"
 
 namespace MinecraftClone
 {
@@ -21,9 +22,9 @@ namespace MinecraftClone
 
 	struct Cube
 	{
-		uint32_t textureID;
+		glm::ivec2 atlasCoord = { 2,3 };
 		glm::vec3 position;
 
-		Cube(const glm::vec3& position, uint32_t textureID);
+		Cube(const glm::vec3& position, const glm::vec2 atlasCoord);
 	};
 }

@@ -1,11 +1,8 @@
 #pragma once
 
 #include "core.h"
-#include "Camera.h"
 #include "Input.h"
-#include "Shader.h"
-#include "Window.h"
-#include "Cube.h"
+#include "Renderer.h"
 
 namespace MinecraftClone
 {
@@ -14,14 +11,7 @@ namespace MinecraftClone
 	private:
 		Camera camera;
 		Shader shader;
-		Window* window;
-		uint32_t VAO, VBO;
-
-		std::vector<Texture> textures;
-		std::array<Vertex, 36> cubeVertices;
-
-		glm::mat4 projection;
-
+		Renderer renderer;
 		std::vector<Cube> cubes;
 
 	public:
@@ -32,8 +22,6 @@ namespace MinecraftClone
 		void addCube(const Cube& cube);
 
 	private:
-		void drawCube(const Cube& cube);
-		Texture createTexture(const std::string& filepath, bool pixelated = false);
 		void defaultScene();
 		void userInput();
 	};

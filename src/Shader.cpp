@@ -92,6 +92,14 @@ void Shader::setUniformMat4f(const std::string& name, const glm::mat4& matrix) c
     glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &matrix[0][0]);
 }
 
+void Shader::setUniformVec2f(const std::string& name, const glm::vec2 vec) const
+{
+    glUseProgram(ID);
+    glCheckError();
+    glUniform2f(glGetUniformLocation(ID, name.c_str()), vec.x, vec.y);
+    glCheckError();
+}
+
 void Shader::checkCompileErrors(unsigned int shader, const std::string& type)
 {
     int success;
