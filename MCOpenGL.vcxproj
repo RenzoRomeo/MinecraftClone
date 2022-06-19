@@ -164,13 +164,16 @@
   <ItemGroup>
     <ClCompile Include="Libraries\include\glm\detail\glm.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Cube.cpp" />
     <ClCompile Include="src\Cubes.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\Input.cpp" />
+    <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\stb_image.cpp" />
     <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="src\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libraries\include\glad\glad.h" />
@@ -460,12 +463,14 @@
     <ClInclude Include="Libraries\include\glm\vector_relational.hpp" />
     <ClInclude Include="Libraries\include\KHR\khrplatform.h" />
     <ClInclude Include="Libraries\include\stb_image.h" />
+    <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\core.h" />
     <ClInclude Include="src\Cubes.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Window.h" />
+    <ClInclude Include="src\World.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\include\glm\detail\func_common.inl" />
@@ -608,6 +613,7 @@
     <None Include="res\shaders\cubeVertex.shader" />
     <None Include="res\shaders\fragment.shader" />
     <None Include="res\shaders\vertex.shader" />
+    <None Include="src\Cube.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
