@@ -16,5 +16,3 @@ Minecraft clone made for educational purposes.
 # BUGS
 
 - Broken textures.
-- Camera movement is slower when looking down/up.
-- Camera glitches when looking down/up directly.
