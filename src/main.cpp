@@ -55,6 +55,7 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
+	glfwSetInputMode(window.nativeWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	float dt = 0.016f;
 	float frameStart = 0.0f;
@@ -64,6 +65,9 @@ int main()
 	glViewport(0, 0, window.windowWidth, window.windowHeight);
 	while (!glfwWindowShouldClose(window.nativeWindow))
 	{
+		if (Input::isKeyDown(GLFW_KEY_ESCAPE))
+			break;
+
 		dt = glfwGetTime() - frameStart;
 		frameStart = glfwGetTime();
 
