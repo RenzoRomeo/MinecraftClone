@@ -9,14 +9,14 @@ namespace MinecraftClone
 		Window(int width, int height, const char* title, bool fullscreen = false);
 		~Window();
 
-		GLFWwindow* nativeWindow;
-		int windowWidth;
-		int windowHeight;
+		GLFWwindow* native_window;
+		int window_width;
+		int window_height;
 
-		void setCallbacks();
-		void close();
+		void SetCallbacks();
+		void Close();
 
-		static Window* createWindow(int width, int height, const char* title, bool fullscreen = false);
-		static void freeWindow(Window* window);
+		static Window* CreateWindow(int width, int height, const char* title, bool fullscreen = false);
+		static void FreeWindow(Window* window);
 	};
 }

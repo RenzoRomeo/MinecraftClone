@@ -7,23 +7,23 @@ namespace MinecraftClone
 {
 	namespace Input
 	{
-		extern bool keyPressedData[GLFW_KEY_LAST];
-		extern bool mouseButtonPressedData[GLFW_MOUSE_BUTTON_LAST];
-		extern float mouseX;
-		extern float mouseY;
-		extern float mouseScrollX;
-		extern float mouseScrollY;
-		extern float xOffset;
-		extern float yOffset;
+		extern bool key_pressed_data[GLFW_KEY_LAST];
+		extern bool mouse_button_pressed_data[GLFW_MOUSE_BUTTON_LAST];
+		extern float mouse_x;
+		extern float mouse_y;
+		extern float mouse_scroll_x;
+		extern float mouse_scroll_y;
+		extern float x_offset;
+		extern float y_offset;
 
-		void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-		void mouseCallback(GLFWwindow* window, double xpos, double ypos);
-		void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
-		void mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+		void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		void MouseCallback(GLFWwindow* window, double xpos, double ypos);
+		void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+		void MouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 
-		bool isKeyDown(int key);
-		bool isMouseButtonDown(int mouseButton);
+		bool IsKeyDown(int key);
+		bool IsMouseButtonDown(int mouseButton);
 
-		void resetMouseOffsets();
+		void ResetMouseOffsets();
 	}
 }

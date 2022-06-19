@@ -11,6 +11,6 @@ namespace MinecraftClone
 
 	public:
 		Game(int width, int height);
-		void run();
+		void Run();
 	};
 }

@@ -34,17 +34,17 @@ namespace MinecraftClone
 	{
 	}
 
-	void Game::run()
+	void Game::Run()
 	{
 		glfwInit();
 
 		Window window(width, height, title);
-		if (window.nativeWindow == nullptr)
+		if (window.native_window == nullptr)
 		{
 			exitWithError("Failed to create GLFW window.\n");
 			return;
 		}
-		window.setCallbacks();
+		window.SetCallbacks();
 
 		if (!gladLoadGL())
 		{
@@ -58,17 +58,17 @@ namespace MinecraftClone
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 
-		glfwSetInputMode(window.nativeWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwSetInputMode(window.native_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		float dt = 0.016f;
 		float frameStart = 0.0f;
 
 		World world(&window);
 
-		glViewport(0, 0, window.windowWidth, window.windowHeight);
-		while (!glfwWindowShouldClose(window.nativeWindow))
+		glViewport(0, 0, window.window_width, window.window_height);
+		while (!glfwWindowShouldClose(window.native_window))
 		{
-			if (Input::isKeyDown(GLFW_KEY_ESCAPE))
+			if (Input::IsKeyDown(GLFW_KEY_ESCAPE))
 				break;
 
 			dt = glfwGetTime() - frameStart;
@@ -78,9 +78,9 @@ namespace MinecraftClone
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			world.frame(dt);
+			world.Frame(dt);
 
-			glfwSwapBuffers(window.nativeWindow);
+			glfwSwapBuffers(window.native_window);
 			glfwPollEvents();
 		}
 

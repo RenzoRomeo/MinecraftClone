@@ -5,19 +5,19 @@ namespace MinecraftClone
 	World::World(Window* window)
 		: camera(Camera({ 0,0,0 }, { 0,1,0 })), renderer(Renderer(window, &camera))
 	{
-		defaultScene();
+		DefaultScene();
 	}
 
 	World::~World()
 	{
 	}
 
-	void World::frame(float dt)
+	void World::Frame(float dt)
 	{
 		shader.use();
 
-		camera.setdt(dt);
-		userInput();
+		camera.SetDt(dt);
+		UserInput();
 
 		for (const auto& cube : cubes)
 		{
@@ -25,41 +25,41 @@ namespace MinecraftClone
 		}
 	}
 
-	void World::addCube(const Cube& cube)
+	void World::AddCube(const Cube& cube)
 	{
 		cubes.push_back(cube);
 	}
 
-	void World::defaultScene()
+	void World::DefaultScene()
 	{
 		for (int x = 0; x < 10; x++)
 		{
 			for (int z = 0; z < 10; z++)
 			{
-				Cube cube(glm::vec3(x - 5, 0, z - 5), { 2,3 });
+				Cube cube(glm::vec3(x - 5, 0, z - 5), { 1,1 });
 
 				if (rand() % 10 > 8)
 				{
-					Cube cube(glm::vec3(x - 5, rand() % 3, z - 5), { 0, 2 });
-					addCube(cube);
+					Cube cube(glm::vec3(x - 5, rand() % 3, z - 5), { 0, 1 });
+					AddCube(cube);
 				}
 
-				addCube(cube);
+				AddCube(cube);
 			}
 		}
 	}
-	void World::userInput()
+	void World::UserInput()
 	{
-		camera.processMouse(Input::xOffset, Input::yOffset);
-		Input::resetMouseOffsets();
+		camera.ProcessMouse(Input::x_offset, Input::y_offset);
+		Input::ResetMouseOffsets();
 
-		if (Input::isKeyDown(GLFW_KEY_W))
-			camera.processKeyboard(CameraMovement::FORWARD);
-		if (Input::isKeyDown(GLFW_KEY_S))
-			camera.processKeyboard(CameraMovement::BACKWARD);
-		if (Input::isKeyDown(GLFW_KEY_A))
-			camera.processKeyboard(CameraMovement::LEFT);
-		if (Input::isKeyDown(GLFW_KEY_D))
-			camera.processKeyboard(CameraMovement::RIGHT);
+		if (Input::IsKeyDown(GLFW_KEY_W))
+			camera.ProcessKeyboard(CameraMovement::FORWARD);
+		if (Input::IsKeyDown(GLFW_KEY_S))
+			camera.ProcessKeyboard(CameraMovement::BACKWARD);
+		if (Input::IsKeyDown(GLFW_KEY_A))
+			camera.ProcessKeyboard(CameraMovement::LEFT);
+		if (Input::IsKeyDown(GLFW_KEY_D))
+			camera.ProcessKeyboard(CameraMovement::RIGHT);
 	}
 }

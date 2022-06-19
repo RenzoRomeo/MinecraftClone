@@ -18,11 +18,11 @@ namespace MinecraftClone
 		World(Window* window);
 		~World();
 
-		void frame(float dt);
-		void addCube(const Cube& cube);
+		void Frame(float dt);
+		void AddCube(const Cube& cube);
 
 	private:
-		void defaultScene();
-		void userInput();
+		void DefaultScene();
+		void UserInput();
 	};
 }

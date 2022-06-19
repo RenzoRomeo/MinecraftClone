@@ -44,7 +44,7 @@ namespace MinecraftClone
 			cubeVertices[vertexIndex].texCoord = texCoords[vertexIndex % 6];
 		}
 
-		float windowAspect = ((float)window->windowWidth / (float)window->windowHeight);
+		float windowAspect = ((float)window->window_width / (float)window->window_height);
 		float fov = 90.0f;
 		float zNear = 0.1f;
 		float zFar = 10000.0f;
@@ -77,7 +77,7 @@ namespace MinecraftClone
 	void Renderer::drawCube(const Cube& cube)
 	{
 		shader.use();
-		shader.setUniformMat4f("uView", camera->getView());
+		shader.setUniformMat4f("uView", camera->GetView());
 		shader.setUniformMat4f("uProjection", projection);
 
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), cube.position);

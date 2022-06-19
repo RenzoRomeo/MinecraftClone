@@ -164,7 +164,7 @@ namespace MinecraftClone
 
 			createDefaultCube();
 
-			float windowAspect = ((float)window.windowWidth / (float)window.windowHeight);
+			float windowAspect = ((float)window.window_width / (float)window.window_height);
 			float fov = 90.0f;
 			float zNear = 0.1f;
 			float zFar = 10000.0f;
@@ -213,7 +213,7 @@ namespace MinecraftClone
 		{
 			texturedCubeShader.use();
 
-			camera.setdt(dt);
+			camera.SetDt(dt);
 
 			// if (Input::movingUp)
 			// 	camera.rotateUp();
@@ -235,7 +235,7 @@ namespace MinecraftClone
 			// if (Input::isKeyDown(GLFW_KEY_D))
 			// 	camera.moveRight();
 
-			texturedCubeShader.setUniformMat4f("uView", camera.getView());
+			texturedCubeShader.setUniformMat4f("uView", camera.GetView());
 			texturedCubeShader.setUniformMat4f("uProjection", projection);
 			for (int i = 0; i < cubePositions.size(); i++)
 			{

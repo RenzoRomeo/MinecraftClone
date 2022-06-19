@@ -3,75 +3,75 @@
 namespace MinecraftClone
 {
 	Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
-		: MovementSpeed(2.5f), MouseSensitivity(0.1f)
+		: movement_speed(2.5f), mouse_sensitivity(0.1f)
 	{
-		Position = position;
-		WorldUp = up;
-		Yaw = yaw;
-		Pitch = pitch;
-		updateCameraVectors();
+		position = position;
+		world_up = up;
+		yaw = yaw;
+		pitch = pitch;
+		UpdateCameraVectors();
 	}
 
 	Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch)
-		: MovementSpeed(2.5f), MouseSensitivity(0.1f)
+		: movement_speed(2.5f), mouse_sensitivity(0.1f)
 	{
-		Position = glm::vec3(posX, posY, posZ);
-		WorldUp = glm::vec3(upX, upY, upZ);
-		Yaw = yaw;
-		Pitch = pitch;
-		updateCameraVectors();
+		position = glm::vec3(posX, posY, posZ);
+		world_up = glm::vec3(upX, upY, upZ);
+		yaw = yaw;
+		pitch = pitch;
+		UpdateCameraVectors();
 	}
 
-	glm::mat4 Camera::getView() const
+	glm::mat4 Camera::GetView() const
 	{
-		return glm::lookAt(Position, Position + Front, Up);
+		return glm::lookAt(position, position + front, up);
 	}
 
-	void Camera::setdt(float dt)
+	void Camera::SetDt(float dt)
 	{
 		this->dt = dt;
 	}
-	void Camera::processKeyboard(CameraMovement direction)
+	void Camera::ProcessKeyboard(CameraMovement direction)
 	{
-		float velocity = MovementSpeed * dt;
+		float velocity = movement_speed * dt;
 		if (direction == CameraMovement::FORWARD)
-			Position += Front * velocity;
+			position += front * velocity;
 		if (direction == CameraMovement::BACKWARD)
-			Position -= Front * velocity;
+			position -= front * velocity;
 		if (direction == CameraMovement::RIGHT)
-			Position += Right * velocity;
+			position += right * velocity;
 		if (direction == CameraMovement::LEFT)
-			Position -= Right * velocity;
+			position -= right * velocity;
 	}
 
-	void Camera::processMouse(float xoffset, float yoffset, GLboolean contrainPitch)
+	void Camera::ProcessMouse(float xoffset, float yoffset, GLboolean contrainPitch)
 	{
-		xoffset *= MouseSensitivity;
-		yoffset *= MouseSensitivity;
+		xoffset *= mouse_sensitivity;
+		yoffset *= mouse_sensitivity;
 
-		Yaw += xoffset;
-		Pitch += yoffset;
+		yaw += xoffset;
+		pitch += yoffset;
 
 		if (contrainPitch)
 		{
-			if (Pitch > 89.0f)
-				Pitch = 89.0f;
-			if (Pitch < -89.0f)
-				Pitch = -89.0f;
+			if (pitch > 89.0f)
+				pitch = 89.0f;
+			if (pitch < -89.0f)
+				pitch = -89.0f;
 		}
 
-		updateCameraVectors();
+		UpdateCameraVectors();
 	}
 
-	void Camera::updateCameraVectors()
+	void Camera::UpdateCameraVectors()
 	{
 		glm::vec3 newDir;
-		newDir.x = glm::cos(glm::radians(Yaw)) * glm::cos(glm::radians(Pitch));
-		newDir.y = glm::sin(glm::radians(Pitch));
-		newDir.z = glm::sin(glm::radians(Yaw)) * glm::cos(glm::radians(Pitch));
+		newDir.x = glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
+		newDir.y = glm::sin(glm::radians(pitch));
+		newDir.z = glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
 
-		Front = glm::normalize(newDir);
-		Right = glm::normalize(glm::cross(Front, WorldUp));
-		Up = glm::normalize(glm::cross(Right, Front));
+		front = glm::normalize(newDir);
+		right = glm::normalize(glm::cross(front, world_up));
+		up = glm::normalize(glm::cross(right, front));
 	}
 }
