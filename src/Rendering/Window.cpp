@@ -1,5 +1,5 @@
 #include "Window.h"
-#include "Input.h"
+#include "../Input.h"
 
 namespace MinecraftClone
 {

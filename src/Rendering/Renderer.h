@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../Shader.h"
-#include "../Window.h"
+#include "Shader.h"
+#include "Window.h"
 #include "../World/Block.h"
 #include "../World/Chunk.h"
-#include "../Camera.h"
+#include "Camera.h"
 
 namespace MinecraftClone
 {

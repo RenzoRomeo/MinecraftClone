@@ -1,5 +1,5 @@
 #include "core.h"
-#include "Window.h"
+#include "Rendering/Window.h"
 #include "Input.h"
 #include "Game.h"
 #include "World/World.h"

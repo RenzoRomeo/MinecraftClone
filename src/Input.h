@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core.h"
-#include "Window.h"
+#include "Rendering/Window.h"
 
 namespace MinecraftClone
 {
