@@ -2,19 +2,23 @@
 
 namespace MinecraftClone
 {
-	Chunk::Chunk()
+	glm::vec3 Chunk::vx = glm::vec3{ 1,0,0 };
+	glm::vec3 Chunk::vy = glm::vec3{ 0,1,0 };
+	glm::vec3 Chunk::vz = glm::vec3{ 0,0,1 };
+
+	Chunk::Chunk(const glm::vec3& position)
+		: position(position)
 	{
-		blocks = new Block[CHUNK_SIZE * CHUNK_SIZE * CHUNK_HEIGHT];
+		blocks = new Block[BLOCK_COUNT];
 
 		// Just a test
-		for (int i = 0; i < CHUNK_HEIGHT; i++)
+		for (int i = 0; i < CHUNK_SIZE; i++)
 		{
 			for (int j = 0; j < CHUNK_SIZE; j++)
 			{
-				for (int k = 0; k < CHUNK_HEIGHT; k++)
+				for (int k = 0; k < CHUNK_SIZE; k++)
 				{
-					int index = Chunk::index(i,j,k);
-					blocks[index].position = glm::vec3(i, j, k);
+					int index = Chunk::Index(i, j, k);
 					blocks[index].atlas_coords = { 0, 0 };
 				}
 			}
@@ -28,7 +32,7 @@ namespace MinecraftClone
 		glDeleteVertexArrays(1, &vao);
 	}
 
-	void Chunk::CreateMesh()
+	int Chunk::CreateMesh()
 	{
 		std::vector<Vertex> cube_vertices;
 
@@ -63,91 +67,62 @@ namespace MinecraftClone
 			glm::vec2(0.0f, 0.0f),
 		};
 
-		for (int z = 0; z < CHUNK_HEIGHT; z++)
+		for (int z = 0; z < CHUNK_SIZE; z++)
 		{
-			for (int x = 0; x < CHUNK_SIZE; x++)
+			for (int y = 0; y < CHUNK_SIZE; y++)
 			{
-				for (int y = 0; y < CHUNK_SIZE; y++)
+				for (int x = 0; x < CHUNK_SIZE; x++)
 				{
-					// For now, it only draws the hollow chunk
-					int front = 0;
-					int right = 1;
-					int back = 2;
-					int left = 3;
-					int top = 4;
-					int bottom = 5;
+					int b = Index(x, y, z);
+					glm::vec3 internal_position = (float)x * vx + (float)y * vy + (float)z * vz;
 
-					// Left
-					if (x == 0)
-					{
-						for (int i = left; i < left + 6; i++)
-						{
-							Vertex v;
-							v.position = vertices[cubeElements[i]];
-							v.tex_coords = texCoords[i % 6];
-							cube_vertices.push_back(v);
-						}
-					}
-					
-					// Right
-					if (x == CHUNK_SIZE - 1)
-					{
-						for (int i = right; i < right + 6; i++)
-						{
-							Vertex v;
-							v.position = vertices[cubeElements[i]];
-							v.tex_coords = texCoords[i % 6];
-							cube_vertices.push_back(v);
-						}
+					for (int i = 0; i < cubeElements.size(); i++)
+					{						
+						cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0}});
 					}
 
-					// Front
-					if (y == 0)
-					{
-						for (int i = front; i < front + 6; i++)
-						{
-							Vertex v;
-							v.position = vertices[cubeElements[i]];
-							v.tex_coords = texCoords[i % 6];
-							cube_vertices.push_back(v);
-						}
-					}
-					
-					// Back
-					if (y == CHUNK_SIZE - 1)
-					{
-						for (int i = back; i < back + 6; i++)
-						{
-							Vertex v;
-							v.position = vertices[cubeElements[i]];
-							v.tex_coords = texCoords[i % 6];
-							cube_vertices.push_back(v);
-						}
-					}
-					
-					// Top
-					if (z == CHUNK_HEIGHT - 1)
-					{
-						for (int i = bottom; i < bottom + 6; i++)
-						{
-							Vertex v;
-							v.position = vertices[cubeElements[i]];
-							v.tex_coords = texCoords[i % 6];
-							cube_vertices.push_back(v);
-						}
-					}
-					
-					// Bottom
-					if (z == 0)
-					{
-						for (int i = top; i < top + 6; i++)
-						{
-							Vertex v;
-							v.position = vertices[cubeElements[i]];
-							v.tex_coords = texCoords[i % 6];
-							cube_vertices.push_back(v);
-						}
-					}
+					//bool front = x == CHUNK_SIZE;
+					//bool back = x == 0;
+					//bool bottom = z == CHUNK_SIZE;
+					//bool top = z == 0;
+					//bool left = y == 0;
+					//bool right = y == CHUNK_SIZE;
+					//
+					//if (front)
+					//	for (int i = 0; i < 6; i++)
+					//	{
+					//		cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6] });
+					//	}
+					//
+					//if (back)
+					//	for (int i = 2 * 6; i < (2 + 1) * 6; i++)
+					//	{
+					//		cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6] });
+					//	}
+					//
+					//if (bottom)
+					//	for (int i = 5 * 6; i < (5 + 1) * 6; i++)
+					//	{
+					//		cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6] });
+					//	}
+					//
+					//if (top)
+					//	for (int i = 4 * 6; i < (4 + 1) * 6; i++)
+					//	{
+					//		cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6] });
+					//	}
+					//
+					//if (left)
+					//	for (int i = 3 * 6; i < (3 + 1) * 6; i++)
+					//	{
+					//		cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6] });
+					//	}
+					//
+					//if (left)
+					//	for (int i = 1 * 6; i < (1 + 1) * 6; i++)
+					//	{
+					//		cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6] });
+					//	}
 				}
 			}
 		}
@@ -158,7 +133,7 @@ namespace MinecraftClone
 		glCreateBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)* cube_vertices.size(), cube_vertices.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * cube_vertices.size(), cube_vertices.data(), GL_STATIC_DRAW);
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, position));
 		glEnableVertexAttribArray(0);
@@ -166,10 +141,25 @@ namespace MinecraftClone
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, tex_coords));
 		glEnableVertexAttribArray(1);
 
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, atlas_coords));
+		glEnableVertexAttribArray(2);
+
+		return cube_vertices.size();
 	}
 
-	int Chunk::index(int x, int y, int z)
+	int Chunk::Index(int x, int y, int z)
 	{
 		return z * CHUNK_SIZE * CHUNK_SIZE + x * CHUNK_SIZE + y;
+	}
+
+	glm::vec3 Chunk::InternalPosition(int x, int y, int z)
+	{
+		return (float)x * vx + (float)y * vy + (float)z * vz;
+	}
+
+	const Block& Chunk::GetBlock(int x, int y, int z)
+	{
+		int i = Index(x, y, z);
+		return blocks[i];
 	}
 }

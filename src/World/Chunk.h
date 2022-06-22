@@ -8,18 +8,24 @@ namespace MinecraftClone
 	struct Chunk
 	{
 		static const int CHUNK_SIZE = 5;
-		static const int CHUNK_HEIGHT = 5;
-		static const int BLOCK_COUNT = CHUNK_SIZE * CHUNK_SIZE * CHUNK_HEIGHT;
+		static const int BLOCK_COUNT = CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE;
+		static glm::vec3 vx, vy, vz;
+
+		glm::vec3 position;
 
 		uint32_t vao, vbo;
 
 		Block* blocks;
 
-		Chunk();
+		Chunk(const glm::vec3& position);
 		~Chunk();
 
-		void CreateMesh();
+		int CreateMesh();
 
-		static int index(int x, int y, int z);
+		static glm::vec3 InternalPosition(int x, int y, int z);
+		const Block& GetBlock(int x, int y, int z);
+
+	private:
+		static int Index(int x, int y, int z);
 	};
 }

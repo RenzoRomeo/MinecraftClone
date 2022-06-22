@@ -8,6 +8,7 @@ namespace MinecraftClone
 	struct Vertex {
 		glm::vec3 position;
 		glm::vec2 tex_coords;
+		glm::vec2 atlas_coords;
 	};
 
 	struct Texture
@@ -22,10 +23,9 @@ namespace MinecraftClone
 	struct Block
 	{
 		glm::vec2 atlas_coords = { 2,3 };
-		glm::vec3 position;
 		bool solid;
 
 		Block();
-		Block(const glm::vec3& position, const glm::vec2 atlasCoord);
+		Block(const glm::vec2 atlasCoord);
 	};
 }

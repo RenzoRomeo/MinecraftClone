@@ -12,7 +12,6 @@ namespace MinecraftClone
 		Camera camera;
 		Shader shader;
 		Renderer renderer;
-		std::vector<Block> cubes;
 		std::vector<Chunk*> chunks;
 
 	public:
@@ -23,7 +22,6 @@ namespace MinecraftClone
 		void AddCube(const Block& cube);
 
 	private:
-		void DefaultScene();
 		void UserInput();
 	};
 }
