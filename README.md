@@ -16,12 +16,7 @@ Minecraft clone made for educational purposes.
 
 # BUGS
 
-- HUGE MEMORY LEAK
-- Broken textures.
-
 
 # IDEAS
 
-- Blocks have 6 faces.
 - Not render faces if next to solid cube.
-- When placing blocks, notify surrounding blocks in order to not render face.
