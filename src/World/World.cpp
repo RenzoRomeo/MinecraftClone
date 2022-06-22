@@ -11,7 +11,7 @@ namespace MinecraftClone
 
 	World::~World()
 	{
-		for (auto& chunk : chunks)
+		for (Chunk* chunk : chunks)
 		{
 			delete chunk;
 		}

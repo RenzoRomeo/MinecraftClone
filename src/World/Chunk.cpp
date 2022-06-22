@@ -6,6 +6,38 @@ namespace MinecraftClone
 	glm::vec3 Chunk::vy = glm::vec3{ 0,1,0 };
 	glm::vec3 Chunk::vz = glm::vec3{ 0,0,1 };
 
+	std::array<glm::vec3, 8> Chunk::vertices = {
+			glm::vec3{-0.5f, 0.5f, 0.5f},
+			glm::vec3{0.5f, 0.5f, 0.5f},
+			glm::vec3{-0.5f, -0.5f, 0.5f},
+			glm::vec3{0.5f, -0.5f, 0.5f},
+
+			glm::vec3{-0.5f, 0.5f, -0.5f},
+			glm::vec3{0.5f, 0.5f, -0.5f},
+			glm::vec3{-0.5f, -0.5f, -0.5f},
+			glm::vec3{0.5f, -0.5f, -0.5f}
+	};
+
+	std::array<uint32_t, 36> Chunk::cubeElements = {
+			1, 0, 2,    3, 1, 2,    // Front face
+			5, 1, 3,    7, 5, 3,    // Right face
+			7, 6, 4,    5, 7, 4,    // Back face
+			0, 4, 6,    2, 0, 6,    // Left face
+			5, 4, 0,    1, 5, 0,    // Top face
+			3, 2, 6,    7, 3, 6     // Bottom face
+	};
+
+	std::array<glm::vec2, 6> Chunk::texCoords = {
+			glm::vec2(1.0f, 1.0f),
+			glm::vec2(0.0f, 1.0f),
+			glm::vec2(0.0f, 0.0f),
+
+			glm::vec2(1.0f, 0.0f),
+			glm::vec2(1.0f, 1.0f),
+			glm::vec2(0.0f, 0.0f),
+	};
+
+
 	Chunk::Chunk(const glm::vec3& position)
 		: position(position)
 	{
@@ -36,37 +68,6 @@ namespace MinecraftClone
 	{
 		std::vector<Vertex> cube_vertices;
 
-		std::array<glm::vec3, 8> vertices = {
-			glm::vec3{-0.5f, 0.5f, 0.5f},
-			glm::vec3{0.5f, 0.5f, 0.5f},
-			glm::vec3{-0.5f, -0.5f, 0.5f},
-			glm::vec3{0.5f, -0.5f, 0.5f},
-
-			glm::vec3{-0.5f, 0.5f, -0.5f},
-			glm::vec3{0.5f, 0.5f, -0.5f},
-			glm::vec3{-0.5f, -0.5f, -0.5f},
-			glm::vec3{0.5f, -0.5f, -0.5f}
-		};
-
-		std::array<uint32_t, 36> cubeElements = {
-			1, 0, 2,    3, 1, 2,    // Front face
-			5, 1, 3,    7, 5, 3,    // Right face
-			7, 6, 4,    5, 7, 4,    // Back face
-			0, 4, 6,    2, 0, 6,    // Left face
-			5, 4, 0,    1, 5, 0,    // Top face
-			3, 2, 6,    7, 3, 6     // Bottom face
-		};
-
-		std::array<glm::vec2, 6> texCoords = {
-			glm::vec2(1.0f, 1.0f),
-			glm::vec2(0.0f, 1.0f),
-			glm::vec2(0.0f, 0.0f),
-
-			glm::vec2(1.0f, 0.0f),
-			glm::vec2(1.0f, 1.0f),
-			glm::vec2(0.0f, 0.0f),
-		};
-
 		for (int z = 0; z < CHUNK_SIZE; z++)
 		{
 			for (int y = 0; y < CHUNK_SIZE; y++)
@@ -77,8 +78,8 @@ namespace MinecraftClone
 					glm::vec3 internal_position = (float)x * vx + (float)y * vy + (float)z * vz;
 
 					for (int i = 0; i < cubeElements.size(); i++)
-					{						
-						cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0}});
+					{
+						cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], { 0,0 } });
 					}
 
 					//bool front = x == CHUNK_SIZE;
@@ -161,5 +162,11 @@ namespace MinecraftClone
 	{
 		int i = Index(x, y, z);
 		return blocks[i];
+	}
+
+	void Chunk::FreeBuffers()
+	{
+		glDeleteBuffers(1, &vbo);
+		glDeleteVertexArrays(1, &vao);
 	}
 }

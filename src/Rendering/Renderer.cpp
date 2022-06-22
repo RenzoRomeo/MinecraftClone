@@ -45,6 +45,8 @@ namespace MinecraftClone
 
 		glBindVertexArray(chunk.vao);
 		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)vertex_count);
+
+		chunk.FreeBuffers();
 	}
 
 	void Renderer::LoadAtlas(const std::string& path, int& width, int& height)
