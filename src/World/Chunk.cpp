@@ -37,15 +37,15 @@ namespace MinecraftClone
 		std::vector<Vertex> cube_vertices;
 
 		std::array<glm::vec3, 8> vertices = {
-		glm::vec3{-0.5f, 0.5f, 0.5f},
-		glm::vec3{0.5f, 0.5f, 0.5f},
-		glm::vec3{-0.5f, -0.5f, 0.5f},
-		glm::vec3{0.5f, -0.5f, 0.5f},
+			glm::vec3{-0.5f, 0.5f, 0.5f},
+			glm::vec3{0.5f, 0.5f, 0.5f},
+			glm::vec3{-0.5f, -0.5f, 0.5f},
+			glm::vec3{0.5f, -0.5f, 0.5f},
 
-		glm::vec3{-0.5f, 0.5f, -0.5f},
-		glm::vec3{0.5f, 0.5f, -0.5f},
-		glm::vec3{-0.5f, -0.5f, -0.5f},
-		glm::vec3{0.5f, -0.5f, -0.5f}
+			glm::vec3{-0.5f, 0.5f, -0.5f},
+			glm::vec3{0.5f, 0.5f, -0.5f},
+			glm::vec3{-0.5f, -0.5f, -0.5f},
+			glm::vec3{0.5f, -0.5f, -0.5f}
 		};
 
 		std::array<uint32_t, 36> cubeElements = {

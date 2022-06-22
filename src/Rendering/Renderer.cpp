@@ -24,7 +24,7 @@ namespace MinecraftClone
 
 	void Renderer::RenderChunk(Chunk& chunk)
 	{
-		shader.use();
+		shader.Use();
 		shader.SetUniformMat4f("uView", camera->GetView());
 		shader.SetUniformMat4f("uProjection", projection);
 

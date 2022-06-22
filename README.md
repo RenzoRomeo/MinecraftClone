@@ -16,6 +16,7 @@ Minecraft clone made for educational purposes.
 
 # BUGS
 
+- HUGE MEMORY LEAK
 - Broken textures.
 
 

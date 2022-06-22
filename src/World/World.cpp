@@ -5,8 +5,8 @@ namespace MinecraftClone
 	World::World(Window* window)
 		: camera(Camera({ 0,0,0 }, { 0,1,0 })), renderer(Renderer(window, &camera))
 	{
-		chunks.push_back(new Chunk({ 0,0,1 }));
-		chunks.push_back(new Chunk({ 0,1,1 }));
+		chunks.push_back(new Chunk({ 0,1,0 }));
+		chunks.push_back(new Chunk({ 0,0,0 }));
 	}
 
 	World::~World()
@@ -19,7 +19,7 @@ namespace MinecraftClone
 
 	void World::Frame(float dt)
 	{
-		shader.use();
+		shader.Use();
 
 		camera.SetDt(dt);
 		UserInput();
