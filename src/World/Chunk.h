@@ -22,7 +22,6 @@ namespace MinecraftClone
 
 		static glm::vec3 InternalPosition(int x, int y, int z);
 		const Block& GetBlock(int x, int y, int z);
-		void FreeBuffers();
 
 	private:
 		static std::array<glm::vec3, 8> vertices;

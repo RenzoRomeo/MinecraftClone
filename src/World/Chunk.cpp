@@ -43,6 +43,9 @@ namespace MinecraftClone
 	{
 		blocks = new Block[BLOCK_COUNT];
 
+		glCreateVertexArrays(1, &vao);
+		glCreateBuffers(1, &vbo);
+
 		// Just a test
 		for (int i = 0; i < CHUNK_SIZE; i++)
 		{
@@ -128,10 +131,8 @@ namespace MinecraftClone
 			}
 		}
 
-		glCreateVertexArrays(1, &vao);
 		glBindVertexArray(vao);
 
-		glCreateBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * cube_vertices.size(), cube_vertices.data(), GL_STATIC_DRAW);
@@ -162,11 +163,5 @@ namespace MinecraftClone
 	{
 		int i = Index(x, y, z);
 		return blocks[i];
-	}
-
-	void Chunk::FreeBuffers()
-	{
-		glDeleteBuffers(1, &vbo);
-		glDeleteVertexArrays(1, &vao);
 	}
 }
