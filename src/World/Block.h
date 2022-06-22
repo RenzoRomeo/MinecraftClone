@@ -1,13 +1,14 @@
 #pragma once
 
-#include "core.h"
-#include "Shader.h"
+#include "../core.h"
+#include "../Shader.h"
 
 namespace MinecraftClone
 {
 	struct Vertex {
 		glm::vec3 position;
 		glm::vec2 tex_coords;
+		glm::vec2 atlas_coords;
 	};
 
 	struct Texture
@@ -19,11 +20,12 @@ namespace MinecraftClone
 		int32_t num_channels;
 	};
 
-	struct Cube
+	struct Block
 	{
-		glm::ivec2 atlas_coords = { 2,3 };
-		glm::vec3 position;
+		glm::vec2 atlas_coords = { 2,3 };
+		bool solid;
 
-		Cube(const glm::vec3& position, const glm::vec2 atlasCoord);
+		Block();
+		Block(const glm::vec2 atlasCoord);
 	};
 }

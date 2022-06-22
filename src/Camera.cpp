@@ -34,13 +34,13 @@ namespace MinecraftClone
 	void Camera::ProcessKeyboard(CameraMovement direction)
 	{
 		float velocity = movement_speed * dt;
-		if (direction == CameraMovement::FORWARD)
+		if (direction == CameraMovement::Forward)
 			position += front * velocity;
-		if (direction == CameraMovement::BACKWARD)
+		if (direction == CameraMovement::Backward)
 			position -= front * velocity;
-		if (direction == CameraMovement::RIGHT)
+		if (direction == CameraMovement::Right)
 			position += right * velocity;
-		if (direction == CameraMovement::LEFT)
+		if (direction == CameraMovement::Left)
 			position -= right * velocity;
 	}
 

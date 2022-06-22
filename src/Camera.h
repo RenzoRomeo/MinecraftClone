@@ -5,10 +5,10 @@ namespace MinecraftClone
 {
 	enum class CameraMovement
 	{
-		FORWARD,
-		BACKWARD,
-		LEFT,
-		RIGHT
+		Forward,
+		Backward,
+		Left,
+		Right
 	};
 
 	class Camera

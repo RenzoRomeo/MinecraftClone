@@ -17,7 +17,7 @@ public:
 	Shader();
 	Shader(const std::string& vertexPath, const std::string& fragmentPath);
 
-	void use();
+	void Use();
 
 	void SetUniform1b(const std::string& name, bool value) const;
 	void SetUniform1i(const std::string& name, int value) const;
