@@ -5,11 +5,16 @@ namespace MinecraftClone
 	World::World(Window* window)
 		: camera(Camera({ 0,0,0 }, { 0,1,0 })), renderer(Renderer(window, &camera))
 	{
-		DefaultScene();
+		// DefaultScene();
+		chunks.push_back(new Chunk());
 	}
 
 	World::~World()
 	{
+		for (auto& chunk : chunks)
+		{
+			delete chunk;
+		}
 	}
 
 	void World::Frame(float dt)
@@ -19,13 +24,17 @@ namespace MinecraftClone
 		camera.SetDt(dt);
 		UserInput();
 
-		for (const auto& cube : cubes)
+		for (const auto& chunk : chunks)
 		{
-			renderer.DrawCube(cube);
+			renderer.RenderChunk(*chunk);
 		}
+		// for (const auto& cube : cubes)
+		// {
+		// 	renderer.DrawCube(cube);
+		// }
 	}
 
-	void World::AddCube(const Cube& cube)
+	void World::AddCube(const Block& cube)
 	{
 		cubes.push_back(cube);
 	}
@@ -36,11 +45,11 @@ namespace MinecraftClone
 		{
 			for (int z = 0; z < 10; z++)
 			{
-				Cube cube(glm::vec3(x - 5, 0, z - 5), { 1,1 });
+				Block cube(glm::vec3(x - 5, 0, z - 5), { 1,1 });
 
 				if (rand() % 10 > 8)
 				{
-					Cube cube(glm::vec3(x - 5, rand() % 3, z - 5), { 0, 1 });
+					Block cube(glm::vec3(x - 5, rand() % 3, z - 5), { 0, 1 });
 					AddCube(cube);
 				}
 
@@ -54,12 +63,12 @@ namespace MinecraftClone
 		Input::ResetMouseOffsets();
 
 		if (Input::IsKeyDown(GLFW_KEY_W))
-			camera.ProcessKeyboard(CameraMovement::FORWARD);
+			camera.ProcessKeyboard(CameraMovement::Forward);
 		if (Input::IsKeyDown(GLFW_KEY_S))
-			camera.ProcessKeyboard(CameraMovement::BACKWARD);
+			camera.ProcessKeyboard(CameraMovement::Backward);
 		if (Input::IsKeyDown(GLFW_KEY_A))
-			camera.ProcessKeyboard(CameraMovement::LEFT);
+			camera.ProcessKeyboard(CameraMovement::Left);
 		if (Input::IsKeyDown(GLFW_KEY_D))
-			camera.ProcessKeyboard(CameraMovement::RIGHT);
+			camera.ProcessKeyboard(CameraMovement::Right);
 	}
 }

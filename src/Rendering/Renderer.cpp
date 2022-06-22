@@ -32,9 +32,9 @@ namespace MinecraftClone
 			glm::vec2(1.0f, 1.0f),
 			glm::vec2(0.0f, 1.0f),
 			glm::vec2(0.0f, 0.0f),
-
-			glm::vec2(1.0f, 1.0f),
+			
 			glm::vec2(1.0f, 0.0f),
+			glm::vec2(1.0f, 1.0f),
 			glm::vec2(0.0f, 0.0f),
 		};
 
@@ -74,7 +74,7 @@ namespace MinecraftClone
 		glDeleteTextures(1, &atlas_id);
 	}
 
-	void Renderer::DrawCube(const Cube& cube)
+	void Renderer::DrawCube(const Block& cube)
 	{
 		shader.use();
 		shader.SetUniformMat4f("uView", camera->GetView());
@@ -99,12 +99,48 @@ namespace MinecraftClone
 		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)cube_vertices.size());
 	}
 
+	void Renderer::RenderChunk(Chunk& chunk)
+	{
+		shader.use();
+		shader.SetUniformMat4f("uView", camera->GetView());
+		shader.SetUniformMat4f("uProjection", projection);
+
+		chunk.CreateMesh();
+
+		for (int i = 0; i < Chunk::BLOCK_COUNT; i++)
+		{
+			Block& cube = chunk.blocks[i];
+
+			shader.use();
+			shader.SetUniformMat4f("uView", camera->GetView());
+			shader.SetUniformMat4f("uProjection", projection);
+
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), cube.position);
+			shader.SetUniformMat4f("uModel", model);
+
+			int textureSlot = 0;
+
+			glActiveTexture(GL_TEXTURE0 + textureSlot);
+			glBindTexture(GL_TEXTURE_2D, atlas_id);
+			shader.SetUniform1i("uTexture", textureSlot);
+
+			shader.SetUniform1i("uAtlasW", atlas_w);
+			shader.SetUniform1i("uAtlasH", atlas_h);
+			shader.SetUniform1i("uAtlasSpriteSize", sprite_size);
+
+			shader.SetUniformVec2f("uAtlasCoord", cube.atlas_coords);
+
+			glBindVertexArray(chunk.vao);
+			glDrawArrays(GL_TRIANGLES, 0, (GLsizei)cube_vertices.size());
+		}
+	}
+
 	void Renderer::LoadAtlas(const std::string& path, int& width, int& height)
 	{
 		int numChannels;
 
 		uint8_t* pixels = stbi_load(path.c_str(), &width, &height, &numChannels, 0);
-		
+
 		int bpp = numChannels;
 		uint32_t textureFormat = GL_RGBA;
 		uint32_t internalFormat = GL_RGBA32F;
@@ -118,17 +154,17 @@ namespace MinecraftClone
 			stbi_image_free(pixels);
 			return;
 		}
-		
+
 		glGenTextures(1, &atlas_id);
 		glBindTexture(GL_TEXTURE_2D, atlas_id);
-		
+
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		
+
 		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, pixels);
-		
+
 		stbi_image_free(pixels);
 	}
 }

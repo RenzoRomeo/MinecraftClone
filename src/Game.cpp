@@ -1,9 +1,8 @@
 #include "core.h"
 #include "Window.h"
 #include "Input.h"
-#include "Cubes.h"
 #include "Game.h"
-#include "World.h"
+#include "World/World.h"
 
 int exitWithError(const char* msg)
 {

@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Shader.h"
-#include "Window.h"
-#include "Cube.h"
-#include "Camera.h"
+#include "../Shader.h"
+#include "../Window.h"
+#include "../World/Block.h"
+#include "../World/Chunk.h"
+#include "../Camera.h"
 
 namespace MinecraftClone
 {
@@ -25,7 +26,8 @@ namespace MinecraftClone
 		Renderer(Window* window, Camera* camera);
 		~Renderer();
 
-		void DrawCube(const Cube& cube);
+		void DrawCube(const Block& cube);
+		void RenderChunk(Chunk& chunk);
 
 	private:
 		void LoadAtlas(const std::string& path, int& width, int& height);
