@@ -77,56 +77,50 @@ namespace MinecraftClone
 			{
 				for (int x = 0; x < CHUNK_SIZE; x++)
 				{
-					int b = Index(x, y, z);
 					glm::vec3 internal_position = (float)x * vx + (float)y * vy + (float)z * vz;
 
-					for (int i = 0; i < cubeElements.size(); i++)
-					{
-						cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], { 0,0 } });
-					}
-
-					//bool front = x == CHUNK_SIZE;
-					//bool back = x == 0;
-					//bool bottom = z == CHUNK_SIZE;
-					//bool top = z == 0;
-					//bool left = y == 0;
-					//bool right = y == CHUNK_SIZE;
-					//
-					//if (front)
-					//	for (int i = 0; i < 6; i++)
-					//	{
-					//		cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6] });
-					//	}
-					//
-					//if (back)
-					//	for (int i = 2 * 6; i < (2 + 1) * 6; i++)
-					//	{
-					//		cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6] });
-					//	}
-					//
-					//if (bottom)
-					//	for (int i = 5 * 6; i < (5 + 1) * 6; i++)
-					//	{
-					//		cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6] });
-					//	}
-					//
-					//if (top)
-					//	for (int i = 4 * 6; i < (4 + 1) * 6; i++)
-					//	{
-					//		cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6] });
-					//	}
-					//
-					//if (left)
-					//	for (int i = 3 * 6; i < (3 + 1) * 6; i++)
-					//	{
-					//		cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6] });
-					//	}
-					//
-					//if (left)
-					//	for (int i = 1 * 6; i < (1 + 1) * 6; i++)
-					//	{
-					//		cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6] });
-					//	}
+					bool front = z == CHUNK_SIZE - 1;
+					bool back = z == 0;
+					bool bottom = y == CHUNK_SIZE - 1;
+					bool top = y == 0;
+					bool left = x == 0;
+					bool right = x == CHUNK_SIZE - 1;
+					
+					if (front)
+						for (int i = 0; i < 6; i++)
+						{
+							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
+						}
+					
+					if (back)
+						for (int i = 2 * 6; i < (2 + 1) * 6; i++)
+						{
+							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
+						}
+					
+					if (top)
+						for (int i = 5 * 6; i < (5 + 1) * 6; i++)
+						{
+							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
+						}
+					
+					if (bottom)
+						for (int i = 4 * 6; i < (4 + 1) * 6; i++)
+						{
+							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {1,0} });
+						}
+					
+					if (left)
+						for (int i = 3 * 6; i < (3 + 1) * 6; i++)
+						{
+							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
+						}
+					
+					if (right)
+						for (int i = 1 * 6; i < (1 + 1) * 6; i++)
+						{
+							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
+						}
 				}
 			}
 		}
@@ -162,5 +156,15 @@ namespace MinecraftClone
 	{
 		int i = Index(x, y, z);
 		return blocks[i];
+	}
+
+	float Chunk::DistanceToPlayer(const glm::vec3& player_position) const
+	{
+		return glm::length(position * (float)CHUNK_SIZE - player_position);
+	}
+
+	float Chunk::DistanceToPoint(const glm::vec3& chunk_pos, const glm::vec3& pos)
+	{
+		return glm::length(chunk_pos * (float)CHUNK_SIZE - pos);
 	}
 }

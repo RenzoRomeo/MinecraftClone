@@ -22,6 +22,8 @@ namespace MinecraftClone
 
 		static glm::vec3 InternalPosition(int x, int y, int z);
 		const Block& GetBlock(int x, int y, int z);
+		float DistanceToPlayer(const glm::vec3& player_position) const;
+		static float DistanceToPoint(const glm::vec3& chunk_pos, const glm::vec3& pos);
 
 	private:
 		static std::array<glm::vec3, 8> vertices;

@@ -23,5 +23,6 @@ namespace MinecraftClone
 
 	private:
 		void UserInput();
+		//void GenerateChunksAroundPlayer();
 	};
 }
