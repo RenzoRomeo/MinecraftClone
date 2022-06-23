@@ -4,9 +4,9 @@ Minecraft clone made for educational purposes.
 
 # TODO
 
+- Not render face if block next to it is solid.
 - Classes for every type of cube, each one with their atlas coordinates.
 - Player.
-- Only render visible blocks.
 - Placing/removing blocks.
 - Inventory.
 - Chunks.
@@ -15,8 +15,3 @@ Minecraft clone made for educational purposes.
 - Consistent naming style.
 
 # BUGS
-
-
-# IDEAS
-
-- Not render faces if next to solid cube.

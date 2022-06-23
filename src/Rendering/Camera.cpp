@@ -3,22 +3,22 @@
 namespace MinecraftClone
 {
 	Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
-		: movement_speed(2.5f), mouse_sensitivity(0.1f)
+		: movement_speed(5.0f), mouse_sensitivity(0.1f)
 	{
-		position = position;
+		this->position = position;
 		world_up = up;
-		yaw = yaw;
-		pitch = pitch;
+		this->yaw = yaw;
+		this->pitch = pitch;
 		UpdateCameraVectors();
 	}
 
 	Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch)
-		: movement_speed(2.5f), mouse_sensitivity(0.1f)
+		: movement_speed(5.0f), mouse_sensitivity(0.1f)
 	{
 		position = glm::vec3(posX, posY, posZ);
 		world_up = glm::vec3(upX, upY, upZ);
-		yaw = yaw;
-		pitch = pitch;
+		this->yaw = yaw;
+		this->pitch = pitch;
 		UpdateCameraVectors();
 	}
 

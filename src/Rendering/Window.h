@@ -15,8 +15,5 @@ namespace MinecraftClone
 
 		void SetCallbacks();
 		void Close();
-
-		static Window* CreateWindow(int width, int height, const char* title, bool fullscreen = false);
-		static void FreeWindow(Window* window);
 	};
 }

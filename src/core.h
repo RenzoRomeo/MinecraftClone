@@ -16,6 +16,9 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/hash.hpp"
+
 #include "stb_image.h"
 
 inline GLenum glCheckError_(const char* file, int line)

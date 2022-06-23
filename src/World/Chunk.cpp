@@ -85,37 +85,37 @@ namespace MinecraftClone
 					bool top = y == 0;
 					bool left = x == 0;
 					bool right = x == CHUNK_SIZE - 1;
-					
+
 					if (front)
 						for (int i = 0; i < 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
 						}
-					
+
 					if (back)
 						for (int i = 2 * 6; i < (2 + 1) * 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
 						}
-					
+
 					if (top)
 						for (int i = 5 * 6; i < (5 + 1) * 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
 						}
-					
+
 					if (bottom)
 						for (int i = 4 * 6; i < (4 + 1) * 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {1,0} });
 						}
-					
+
 					if (left)
 						for (int i = 3 * 6; i < (3 + 1) * 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
 						}
-					
+
 					if (right)
 						for (int i = 1 * 6; i < (1 + 1) * 6; i++)
 						{
@@ -158,13 +158,16 @@ namespace MinecraftClone
 		return blocks[i];
 	}
 
-	float Chunk::DistanceToPlayer(const glm::vec3& player_position) const
-	{
-		return glm::length(position * (float)CHUNK_SIZE - player_position);
-	}
-
-	float Chunk::DistanceToPoint(const glm::vec3& chunk_pos, const glm::vec3& pos)
-	{
-		return glm::length(chunk_pos * (float)CHUNK_SIZE - pos);
-	}
+	//float Chunk::DistanceToPlayer(const glm::vec3& player_position) const
+	//{
+	//	glm::vec3 chunk_p = player_position / (float)CHUNK_SIZE;
+	//	return abs(position.x - chunk_p.x / (float)CHUNK_SIZE)
+	//		+ abs(position.y - chunk_p.y / (float)CHUNK_SIZE)
+	//		+ abs(position.z - chunk_p.z / (float)CHUNK_SIZE);
+	//}
+	//
+	//float Chunk::DistanceToPoint(const glm::vec3& chunk_pos, const glm::vec3& pos)
+	//{
+	//	return glm::length(chunk_pos * (float)CHUNK_SIZE - pos);
+	//}
 }

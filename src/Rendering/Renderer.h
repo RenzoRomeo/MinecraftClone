@@ -11,9 +11,7 @@ namespace MinecraftClone
 	class Renderer
 	{
 	private:
-		Camera* camera;
 		Shader shader;
-		Window* window;
 
 		int atlas_w, atlas_h, sprite_size;
 		uint32_t atlas_id;
@@ -21,9 +19,9 @@ namespace MinecraftClone
 		glm::mat4 projection;
 
 	public:
-		Renderer(Window* window, Camera* camera);
+		Renderer();
 		~Renderer();
-		void RenderChunk(Chunk& chunk);
+		void RenderChunk(Window* window, Camera* camera, Chunk& chunk);
 
 	private:
 		void LoadAtlas(const std::string& path, int& width, int& height);

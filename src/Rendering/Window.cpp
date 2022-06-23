@@ -4,7 +4,10 @@
 namespace MinecraftClone
 {
     Window::Window(int width, int height, const char* title, bool fullscreen)
-        :   window_width(width), window_height(height) {
+        :   window_width(width), window_height(height)
+    {
+        glfwInit();
+
         // GLFW window hints
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);

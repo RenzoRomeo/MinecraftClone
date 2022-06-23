@@ -1,5 +1,4 @@
 #include "core.h"
-#include "Rendering/Window.h"
 #include "Input.h"
 #include "Game.h"
 #include "World/World.h"
@@ -29,15 +28,12 @@ void GLAPIENTRY errorMessageCallback(
 namespace MinecraftClone
 {
 	Game::Game(int width, int height)
-		: width(width), height(height), title("Minecraft Clone")
+		: width(width), height(height), title("Minecraft Clone"), camera(Camera({ 0, 20, 0 })), window(Window(width, height, title))
 	{
 	}
 
 	void Game::Run()
 	{
-		glfwInit();
-
-		Window window(width, height, title);
 		if (window.native_window == nullptr)
 		{
 			exitWithError("Failed to create GLFW window.\n");
@@ -62,13 +58,15 @@ namespace MinecraftClone
 		float dt = 0.016f;
 		float frameStart = 0.0f;
 
-		World world(&window);
+		World* world = World::GetInstance();
 
 		glViewport(0, 0, window.window_width, window.window_height);
 		while (!glfwWindowShouldClose(window.native_window))
 		{
 			if (Input::IsKeyDown(GLFW_KEY_ESCAPE))
 				break;
+
+			UserInput();
 
 			dt = glfwGetTime() - frameStart;
 			frameStart = glfwGetTime();
@@ -77,12 +75,27 @@ namespace MinecraftClone
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			world.Frame(dt);
+			world->Frame(&window, &camera, dt);
 
 			glfwSwapBuffers(window.native_window);
 			glfwPollEvents();
 		}
 
 		glfwTerminate();
+	}
+
+	void Game::UserInput()
+	{
+		camera.ProcessMouse(Input::x_offset, Input::y_offset);
+		Input::ResetMouseOffsets();
+
+		if (Input::IsKeyDown(GLFW_KEY_W))
+			camera.ProcessKeyboard(CameraMovement::Forward);
+		if (Input::IsKeyDown(GLFW_KEY_S))
+			camera.ProcessKeyboard(CameraMovement::Backward);
+		if (Input::IsKeyDown(GLFW_KEY_A))
+			camera.ProcessKeyboard(CameraMovement::Left);
+		if (Input::IsKeyDown(GLFW_KEY_D))
+			camera.ProcessKeyboard(CameraMovement::Right);
 	}
 }

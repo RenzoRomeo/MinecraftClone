@@ -2,67 +2,73 @@
 
 namespace MinecraftClone
 {
-	World::World(Window* window)
-		: camera(Camera({ 0,0,0 }, { 0,1,0 })), renderer(Renderer(window, &camera))
+	World* World::instance = nullptr;
+
+	World::World()
+		: render_distance(5)
 	{
-		chunks.push_back(new Chunk({ 0,0,0 }));
+		InitChunksAroundPlayer();
 	}
 
 	World::~World()
 	{
-		for (Chunk* chunk : chunks)
-		{
-			delete chunk;
-		}
 	}
 
-	void World::Frame(float dt)
+	World* World::GetInstance()
+	{
+		if (instance == nullptr)
+			instance = new World();
+		return instance;
+	}
+
+	void World::Frame(Window* window, Camera* camera, float dt)
 	{
 		shader.Use();
 
-		camera.SetDt(dt);
-		UserInput();
+		camera->SetDt(dt);
 
-		//GenerateChunksAroundPlayer();
+		GenerateNewChunks(camera->position);
 
-		for (int i = 0; i < chunks.size(); i++)
+		for (auto& it : chunk_map)
 		{
-			Chunk* chunk = chunks.at(i);
-			renderer.RenderChunk(*chunk);
-			if (chunk->DistanceToPlayer(camera.position) >= 15.0f)
+			const glm::vec3& pos = it.first;
+			auto& chunk = it.second; 
+			if (chunk != nullptr && glm::length(camera->position / (float)Chunk::CHUNK_SIZE - chunk->position) <= render_distance)
 			{
-				std::cout << "Deleted chunk - Distance: " << chunks.at(0)->DistanceToPlayer(camera.position) << '\n';
-				chunks.erase(chunks.begin() + i);
+				renderer.RenderChunk(window, camera, *chunk);
 			}
 		}
 
+		std::cout << "x:" << camera->position.x << " | y: " << camera->position.y << " | z: " << camera->position.z << '\r';
 	}
 
-	void World::UserInput()
+	void World::InitChunksAroundPlayer()
 	{
-		camera.ProcessMouse(Input::x_offset, Input::y_offset);
-		Input::ResetMouseOffsets();
+		int limit = render_distance;
 
-		if (Input::IsKeyDown(GLFW_KEY_W))
-			camera.ProcessKeyboard(CameraMovement::Forward);
-		if (Input::IsKeyDown(GLFW_KEY_S))
-			camera.ProcessKeyboard(CameraMovement::Backward);
-		if (Input::IsKeyDown(GLFW_KEY_A))
-			camera.ProcessKeyboard(CameraMovement::Left);
-		if (Input::IsKeyDown(GLFW_KEY_D))
-			camera.ProcessKeyboard(CameraMovement::Right);
+		for (int x = -limit; x < limit; x++)
+		{
+			for (int z = -limit; z < limit; z++)
+			{
+				glm::vec3 pos = { x,0,z };
+				chunk_map[pos] = std::make_unique<Chunk>(pos);
+			}
+		}
 	}
 
-	//void World::GenerateChunksAroundPlayer()
-	//{
-	//	float render_distance = 15.0f;
-	//
-	//	for (int x = -render_distance; x < render_distance; x++)
-	//	{
-	//		for (int z = -render_distance; z < render_distance; z++)
-	//		{
-	//			chunks.push_back(new Chunk({ x,0,z }));
-	//		}
-	//	}
-	//}
+	void World::GenerateNewChunks(const glm::vec3& camera_position)
+	{
+		glm::vec3 player_chunk_pos = camera_position / (float)Chunk::CHUNK_SIZE;
+		for (int x = player_chunk_pos.x - render_distance; x < player_chunk_pos.x + render_distance; x++)
+		{
+			for (int z = player_chunk_pos.z - render_distance; z < player_chunk_pos.z + render_distance; z++)
+			{
+				glm::vec3 pos = { x, 0, z };
+				if (chunk_map[pos] == nullptr)
+				{
+					chunk_map[pos] = std::make_unique<Chunk>(pos);
+				}
+			}
+		}
+	}
 }

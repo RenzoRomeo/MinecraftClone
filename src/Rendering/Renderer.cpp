@@ -2,16 +2,9 @@
 
 namespace MinecraftClone
 {
-	Renderer::Renderer(Window* window, Camera* camera)
-		: window(window), camera(camera)
+	Renderer::Renderer()
 	{
 		shader = Shader("res/shaders/cubeVertex.shader", "res/shaders/cubeFragment.shader");
-
-		float windowAspect = ((float)window->window_width / (float)window->window_height);
-		float fov = 90.0f;
-		float zNear = 0.1f;
-		float zFar = 10000.0f;
-		projection = glm::perspective(fov, windowAspect, zNear, zFar);
 
 		LoadAtlas("res/images/blocks.png", atlas_w, atlas_h);
 		sprite_size = 16;
@@ -22,8 +15,14 @@ namespace MinecraftClone
 		glDeleteTextures(1, &atlas_id);
 	}
 
-	void Renderer::RenderChunk(Chunk& chunk)
+	void Renderer::RenderChunk(Window* window, Camera* camera, Chunk& chunk)
 	{
+		float windowAspect = ((float)window->window_width / (float)window->window_height);
+		float fov = 90.0f;
+		float zNear = 0.1f;
+		float zFar = 10000.0f;
+		projection = glm::perspective(fov, windowAspect, zNear, zFar);
+
 		shader.Use();
 		shader.SetUniformMat4f("uView", camera->GetView());
 		shader.SetUniformMat4f("uProjection", projection);
