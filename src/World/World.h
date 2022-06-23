@@ -28,7 +28,7 @@ namespace MinecraftClone
 
 		void GenerateNewChunks(const glm::vec3& camera_position);
 
-		bool ChunkHasNeighbor(const Chunk& chunk, Sides side);
+		bool ChunkHasNeighbor(const glm::vec3& chunk_position, Sides side);
 
 		void AddCube(const Block& cube);
 

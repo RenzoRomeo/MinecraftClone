@@ -1,5 +1,7 @@
 #include "Chunk.h"
 
+#include "World.h"
+
 namespace MinecraftClone
 {
 	glm::vec3 Chunk::vx = glm::vec3{ 1,0,0 };
@@ -86,37 +88,39 @@ namespace MinecraftClone
 					bool left = x == 0;
 					bool right = x == CHUNK_SIZE - 1;
 
-					if (front)
+					World* world = World::GetInstance();
+
+					if (front && !world->ChunkHasNeighbor(position, Sides::Front))
 						for (int i = 0; i < 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
 						}
 
-					if (back)
+					if (back && !world->ChunkHasNeighbor(position, Sides::Back))
 						for (int i = 2 * 6; i < (2 + 1) * 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
 						}
 
-					if (top)
+					if (top && !world->ChunkHasNeighbor(position, Sides::Top))
 						for (int i = 5 * 6; i < (5 + 1) * 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
 						}
 
-					if (bottom)
+					if (bottom && !world->ChunkHasNeighbor(position, Sides::Bottom))
 						for (int i = 4 * 6; i < (4 + 1) * 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {1,0} });
 						}
 
-					if (left)
+					if (left && !world->ChunkHasNeighbor(position, Sides::Left))
 						for (int i = 3 * 6; i < (3 + 1) * 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
 						}
 
-					if (right)
+					if (right && !world->ChunkHasNeighbor(position, Sides::Right))
 						for (int i = 1 * 6; i < (1 + 1) * 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });

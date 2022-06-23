@@ -71,4 +71,10 @@ namespace MinecraftClone
 			}
 		}
 	}
+
+	bool World::ChunkHasNeighbor(const glm::vec3& chunk_position, Sides side)
+	{
+		// Temporal
+		return false;
+	}
 }
