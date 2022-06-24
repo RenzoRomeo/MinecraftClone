@@ -4,45 +4,34 @@ namespace MinecraftClone
 {
 	Renderer::Renderer()
 	{
-		shader = Shader("res/shaders/cubeVertex.shader", "res/shaders/cubeFragment.shader");
-
-		LoadAtlas("res/images/blocks.png", atlas_w, atlas_h);
-		sprite_size = 16;
+		m_shader = Shader("res/shaders/cubeVertex.shader", "res/shaders/cubeFragment.shader");
+		m_sprite_size = 16;
+		LoadAtlas("res/images/blocks.png", m_atlas_w, m_atlas_h);
 	}
 
 	Renderer::~Renderer()
 	{
-		glDeleteTextures(1, &atlas_id);
+		glDeleteTextures(1, &m_atlas_id);
 	}
 
-	void Renderer::RenderChunk(Window* window, Camera* camera, Chunk& chunk)
+	void Renderer::RenderChunk(Window* window, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection, uint32_t vao, uint32_t vertex_count)
 	{
-		float windowAspect = ((float)window->window_width / (float)window->window_height);
-		float fov = 90.0f;
-		float zNear = 0.1f;
-		float zFar = 10000.0f;
-		projection = glm::perspective(fov, windowAspect, zNear, zFar);
 
-		shader.Use();
-		shader.SetUniformMat4f("uView", camera->GetView());
-		shader.SetUniformMat4f("uProjection", projection);
-
-		int vertex_count = chunk.CreateMesh();
-
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), chunk.position * glm::vec3(Chunk::CHUNK_SIZE));
-		shader.SetUniformMat4f("uModel", model);
+		m_shader.Use();
+		m_shader.SetUniformMat4f("uModel", model);
+		m_shader.SetUniformMat4f("uView", view);
+		m_shader.SetUniformMat4f("uProjection", projection);
 
 		int textureSlot = 0;
-
 		glActiveTexture(GL_TEXTURE0 + textureSlot);
-		glBindTexture(GL_TEXTURE_2D, atlas_id);
-		shader.SetUniform1i("uTexture", textureSlot);
+		glBindTexture(GL_TEXTURE_2D, m_atlas_id);
+		m_shader.SetUniform1i("uTexture", textureSlot);
 
-		shader.SetUniform1i("uAtlasW", atlas_w);
-		shader.SetUniform1i("uAtlasH", atlas_h);
-		shader.SetUniform1i("uAtlasSpriteSize", sprite_size);
+		m_shader.SetUniform1i("uAtlasW", m_atlas_w);
+		m_shader.SetUniform1i("uAtlasH", m_atlas_h);
+		m_shader.SetUniform1i("uAtlasSpriteSize", m_sprite_size);
 
-		glBindVertexArray(chunk.vao);
+		glBindVertexArray(vao);
 		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)vertex_count);
 	}
 
@@ -66,8 +55,8 @@ namespace MinecraftClone
 			return;
 		}
 
-		glGenTextures(1, &atlas_id);
-		glBindTexture(GL_TEXTURE_2D, atlas_id);
+		glGenTextures(1, &m_atlas_id);
+		glBindTexture(GL_TEXTURE_2D, m_atlas_id);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

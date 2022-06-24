@@ -148,7 +148,7 @@ namespace MinecraftClone
 
 	int Chunk::Index(int x, int y, int z)
 	{
-		return z * CHUNK_SIZE * CHUNK_SIZE + x * CHUNK_SIZE + y;
+		return z * Chunk::GetSize() * Chunk::GetSize() + x * Chunk::GetSize() + y;
 	}
 
 	glm::vec3 Chunk::InternalPosition(int x, int y, int z)
@@ -161,17 +161,4 @@ namespace MinecraftClone
 		int i = Index(x, y, z);
 		return blocks[i];
 	}
-
-	//float Chunk::DistanceToPlayer(const glm::vec3& player_position) const
-	//{
-	//	glm::vec3 chunk_p = player_position / (float)CHUNK_SIZE;
-	//	return abs(position.x - chunk_p.x / (float)CHUNK_SIZE)
-	//		+ abs(position.y - chunk_p.y / (float)CHUNK_SIZE)
-	//		+ abs(position.z - chunk_p.z / (float)CHUNK_SIZE);
-	//}
-	//
-	//float Chunk::DistanceToPoint(const glm::vec3& chunk_pos, const glm::vec3& pos)
-	//{
-	//	return glm::length(chunk_pos * (float)CHUNK_SIZE - pos);
-	//}
 }

@@ -5,7 +5,7 @@ namespace MinecraftClone
 	World* World::instance = nullptr;
 
 	World::World()
-		: render_distance(5)
+		: render_distance(5), player(Player())
 	{
 		InitChunksAroundPlayer();
 	}
@@ -21,25 +21,33 @@ namespace MinecraftClone
 		return instance;
 	}
 
-	void World::Frame(Window* window, Camera* camera, float dt)
+	void World::Frame(Window* window)
 	{
 		shader.Use();
 
-		camera->SetDt(dt);
+		static float frameStart = glfwGetTime();
+		static float dt = 0.0f;
 
-		GenerateNewChunks(camera->position);
+		dt = glfwGetTime() - frameStart;
+		frameStart = glfwGetTime();
+
+		UserInput(dt);
+
+		GenerateNewChunks(player.GetPosition());
 
 		for (auto& it : chunk_map)
 		{
 			const glm::vec3& pos = it.first;
 			auto& chunk = it.second; 
-			if (chunk != nullptr && glm::length(camera->position / (float)Chunk::CHUNK_SIZE - chunk->position) <= render_distance)
+			if (chunk != nullptr && glm::length(player.GetPosition() / (float)Chunk::GetSize() - chunk->GetPosition()) <= render_distance)
 			{
-				renderer.RenderChunk(window, camera, *chunk);
+				DrawChunk(window, pos);
 			}
 		}
 
-		std::cout << "x:" << camera->position.x << " | y: " << camera->position.y << " | z: " << camera->position.z << '\r';
+		Falling(dt);
+
+		std::cout << "x:" << player.GetPosition().x << " | y: " << player.GetPosition().y << " | z: " << player.GetPosition().z << '\r';
 	}
 
 	void World::InitChunksAroundPlayer()
@@ -58,7 +66,7 @@ namespace MinecraftClone
 
 	void World::GenerateNewChunks(const glm::vec3& camera_position)
 	{
-		glm::vec3 player_chunk_pos = camera_position / (float)Chunk::CHUNK_SIZE;
+		glm::vec3 player_chunk_pos = camera_position / (float)Chunk::GetSize();
 		for (int x = player_chunk_pos.x - render_distance; x < player_chunk_pos.x + render_distance; x++)
 		{
 			for (int z = player_chunk_pos.z - render_distance; z < player_chunk_pos.z + render_distance; z++)
@@ -76,5 +84,57 @@ namespace MinecraftClone
 	{
 		// Temporal
 		return false;
+	}
+
+	void World::DrawChunk(Window* window, const glm::vec3& position)
+	{
+		float fov = 90.0f;
+		float zNear = 0.1f;
+		float zFar = 10000.0f;
+		glm::mat4 projection = glm::perspective(fov, window->GetAspectRatio(), zNear, zFar);
+
+		auto& chunk = chunk_map[position];
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), chunk->GetPosition() * glm::vec3(Chunk::GetSize()));
+
+		glm::mat4 view = player.GetView();
+
+		uint32_t vertex_count = chunk->CreateMesh();
+
+		renderer.RenderChunk(window, model, view, projection, chunk->GetVao(), vertex_count);
+	}
+
+	void World::UserInput(float dt)
+	{
+		player.ProcessMouse(Input::x_offset, Input::y_offset, dt);
+		Input::ResetMouseOffsets();
+
+		if (Input::IsKeyDown(GLFW_KEY_W))
+			player.ProcessKeyboard(Movement::Forward, dt);
+		if (Input::IsKeyDown(GLFW_KEY_S))
+			player.ProcessKeyboard(Movement::Backward, dt);
+		if (Input::IsKeyDown(GLFW_KEY_A))
+			player.ProcessKeyboard(Movement::Left, dt);
+		if (Input::IsKeyDown(GLFW_KEY_D))
+			player.ProcessKeyboard(Movement::Right, dt);
+		if (Input::IsKeyDown(GLFW_KEY_SPACE))
+			player.ProcessKeyboard(Movement::Jump, dt);
+	}
+
+	void World::Falling(float dt)
+	{
+		static glm::vec3 g = { 0, -2, 0 };
+
+		const glm::vec3& player_position = player.GetPosition();
+
+		if (player_position.y != 5 && player_position.y > player.GetHeight())
+		{
+			player.SetPosition(player_position + player.GetVelocity());
+			player.SetVelocity(player.GetVelocity() + g * dt);
+		}
+		else
+		{
+			player.SetPosition({ player_position.x,5,player_position.z });
+			player.SetVelocity({ 0,0,0 });
+		}
 	}
 }

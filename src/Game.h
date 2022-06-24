@@ -1,23 +1,17 @@
 #pragma once
 
-#include "Rendering/Renderer.h"
+#include "Rendering/Window.h"
 
 namespace MinecraftClone
 {
 	class Game
 	{
-	private:
-		int width;
-		int height;
-		const char* title;
-		Window window;
-		Camera camera;
-
 	public:
-		Game(int width, int height);
+		Game(int width, int height, const std::string& title);
+
 		void Run();
 
 	private:
-		void UserInput();
+		Window window;
 	};
 }

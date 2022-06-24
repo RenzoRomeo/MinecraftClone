@@ -16,3 +16,5 @@ Minecraft clone made for educational purposes.
 - Consistent naming style.
 
 # BUGS
+
+- Textures are broken!

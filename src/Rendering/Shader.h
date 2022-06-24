@@ -11,9 +11,6 @@
 class Shader
 {
 public:
-	unsigned int id;
-
-public:
 	Shader();
 	Shader(const std::string& vertexPath, const std::string& fragmentPath);
 
@@ -26,6 +23,11 @@ public:
 	void SetUniformMat4f(const std::string& name, const glm::mat4& matrix) const;
 
 	void Free();
+
+	uint32_t GetId() const { return id; }
+
+private:
+	uint32_t id;
 
 private:
 	void CheckCompileErrors(unsigned int shader, const std::string& type);
