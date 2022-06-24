@@ -18,3 +18,4 @@ Minecraft clone made for educational purposes.
 # BUGS
 
 - Textures are broken!
+- Jumping doesn't work.
