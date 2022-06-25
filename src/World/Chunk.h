@@ -35,7 +35,6 @@ namespace MinecraftClone
 
 		static const int CHUNK_SIZE = 5;
 		static const int BLOCK_COUNT = CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE;
-		static glm::vec3 vx, vy, vz;
 
 		glm::vec3 position;
 		uint32_t vao, vbo;

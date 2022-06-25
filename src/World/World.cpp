@@ -23,8 +23,6 @@ namespace MinecraftClone
 
 	void World::Frame(Window* window)
 	{
-		shader.Use();
-
 		static float frameStart = glfwGetTime();
 		static float dt = 0.0f;
 
@@ -45,7 +43,7 @@ namespace MinecraftClone
 			}
 		}
 
-		Falling(dt);
+		// Falling(dt);
 
 		std::cout << "x:" << player.GetPosition().x << " | y: " << player.GetPosition().y << " | z: " << player.GetPosition().z << '\r';
 	}

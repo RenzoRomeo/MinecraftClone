@@ -3,7 +3,7 @@
 namespace MinecraftClone
 {
 	Player::Player()
-		: m_movement_speed(5.0f), m_mouse_sensitivity(0.1f)
+		: m_movement_speed(5.0f), m_mouse_sensitivity(0.3f)
 	{
 		m_position = { 0,20,0 };
 		m_front = { 1,0,0 };
@@ -17,7 +17,7 @@ namespace MinecraftClone
 	}
 
 	Player::Player(const glm::vec3& position, const glm::vec3& looking_direction)
-		: m_movement_speed(5.0f), m_mouse_sensitivity(0.1f)
+		: m_movement_speed(5.0f), m_mouse_sensitivity(0.3f)
 	{
 		m_position = position;
 		m_front = looking_direction;
@@ -34,9 +34,11 @@ namespace MinecraftClone
 	{
 		float velocity = m_movement_speed * dt;
 		if (movement == Movement::Forward)
-			m_position += glm::vec3{m_front.x* velocity, 0, m_front.z* velocity};
+			//m_position += glm::vec3{m_front.x* velocity, 0, m_front.z* velocity};// Ground collision
+			m_position += m_front * velocity;
 		if (movement == Movement::Backward)
-			m_position -= glm::vec3{ m_front.x * velocity, 0, m_front.z * velocity };
+			//m_position -= glm::vec3{ m_front.x * velocity, 0, m_front.z * velocity }; // Ground collision
+			m_position -= m_front * velocity;
 		if (movement == Movement::Right)
 			m_position += m_right * velocity;
 		if (movement == Movement::Left)

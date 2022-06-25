@@ -4,10 +4,6 @@
 
 namespace MinecraftClone
 {
-	glm::vec3 Chunk::vx = glm::vec3{ 1,0,0 };
-	glm::vec3 Chunk::vy = glm::vec3{ 0,1,0 };
-	glm::vec3 Chunk::vz = glm::vec3{ 0,0,1 };
-
 	std::array<glm::vec3, 8> Chunk::vertices = {
 			glm::vec3{-0.5f, 0.5f, 0.5f},
 			glm::vec3{0.5f, 0.5f, 0.5f},
@@ -79,7 +75,7 @@ namespace MinecraftClone
 			{
 				for (int x = 0; x < CHUNK_SIZE; x++)
 				{
-					glm::vec3 internal_position = (float)x * vx + (float)y * vy + (float)z * vz;
+					glm::vec3 internal_position = (float)x * World::GetVx() + (float)y * World::GetVy() + (float)z * World::GetVz();
 
 					bool front = z == CHUNK_SIZE - 1;
 					bool back = z == 0;
@@ -95,31 +91,31 @@ namespace MinecraftClone
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
 						}
-
+					
 					if (back && !world->ChunkHasNeighbor(position, Sides::Back))
 						for (int i = 2 * 6; i < (2 + 1) * 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
 						}
-
+					
 					if (top && !world->ChunkHasNeighbor(position, Sides::Top))
 						for (int i = 5 * 6; i < (5 + 1) * 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
 						}
-
+					
 					if (bottom && !world->ChunkHasNeighbor(position, Sides::Bottom))
 						for (int i = 4 * 6; i < (4 + 1) * 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {1,0} });
 						}
-
+					
 					if (left && !world->ChunkHasNeighbor(position, Sides::Left))
 						for (int i = 3 * 6; i < (3 + 1) * 6; i++)
 						{
 							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], {0,0} });
 						}
-
+					
 					if (right && !world->ChunkHasNeighbor(position, Sides::Right))
 						for (int i = 1 * 6; i < (1 + 1) * 6; i++)
 						{
@@ -153,7 +149,7 @@ namespace MinecraftClone
 
 	glm::vec3 Chunk::InternalPosition(int x, int y, int z)
 	{
-		return (float)x * vx + (float)y * vy + (float)z * vz;
+		return (float)x * World::GetVx() + (float)y * World::GetVy() + (float)z * World::GetVz();
 	}
 
 	const Block& Chunk::GetBlock(int x, int y, int z)

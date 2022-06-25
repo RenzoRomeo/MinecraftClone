@@ -22,8 +22,6 @@ namespace MinecraftClone
 		int m_atlas_w, m_atlas_h, m_sprite_size;
 		uint32_t m_atlas_id;
 
-		glm::mat4 m_projection;
-
 	private:
 		void LoadAtlas(const std::string& path, int& width, int& height);
 	};

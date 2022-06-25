@@ -26,15 +26,19 @@ namespace MinecraftClone
 
 		void AddCube(const Block& cube);
 
+		static glm::vec3 GetVx() { return { 1,0,0 }; }
+		static glm::vec3 GetVy() { return { 0,1,0 }; }
+		static glm::vec3 GetVz() { return { 0,0,1 }; }
+
 	private:
+		static World* instance;
+
 		Shader shader;
 		Renderer renderer;
 		Player player;
 		int render_distance;
 
 		std::unordered_map<glm::vec3, std::unique_ptr<Chunk>> chunk_map;
-
-		static World* instance;
 
 	private:
 		World();

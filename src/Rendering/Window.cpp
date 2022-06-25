@@ -47,6 +47,9 @@ namespace MinecraftClone
 
 		glEnable(GL_DEBUG_OUTPUT);
 		glDebugMessageCallback(ErrorCallback, 0);
+
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
 	}
 
 	Window::~Window()
