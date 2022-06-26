@@ -20,9 +20,9 @@ namespace MinecraftClone
 
 		void GenerateNewChunks(const glm::vec3& camera_position);
 
-		bool ChunkHasNeighbor(const glm::vec3& chunk_position, Sides side);
+		std::shared_ptr<Chunk> GetChunk(const glm::vec3& chunk_position);
 
-		void DrawChunk(Window* window, const glm::vec3& position);
+		bool IsNeighborSolidBlock(const glm::vec3& chunk_position, const glm::vec3& block_position, Sides side);
 
 		void AddCube(const Block& cube);
 
@@ -38,7 +38,7 @@ namespace MinecraftClone
 		Player player;
 		int render_distance;
 
-		std::unordered_map<glm::vec3, std::unique_ptr<Chunk>> chunk_map;
+		std::unordered_map<glm::vec3, std::shared_ptr<Chunk>> chunk_map;
 
 	private:
 		World();
@@ -46,5 +46,7 @@ namespace MinecraftClone
 		void UserInput(float dt);
 		void Falling(float dt);
 		void InitChunksAroundPlayer();
+		bool ChunkHasNeighbor(const glm::vec3& chunk_position, Sides side);
+		std::shared_ptr<Chunk> NeighboringChunk(const glm::vec3 chunk_position, Sides side);
 	};
 }

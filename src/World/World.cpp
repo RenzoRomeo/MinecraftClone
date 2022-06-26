@@ -31,15 +31,16 @@ namespace MinecraftClone
 
 		UserInput(dt);
 
+		// Procedural generation
 		GenerateNewChunks(player.GetPosition());
 
 		for (auto& it : chunk_map)
 		{
 			const glm::vec3& pos = it.first;
-			auto& chunk = it.second; 
+			auto& chunk = it.second;
 			if (chunk != nullptr && glm::length(player.GetPosition() / (float)Chunk::GetSize() - chunk->GetPosition()) <= render_distance)
 			{
-				DrawChunk(window, pos);
+				renderer.RenderChunk(window, *chunk, player);
 			}
 		}
 
@@ -57,9 +58,12 @@ namespace MinecraftClone
 			for (int z = -limit; z < limit; z++)
 			{
 				glm::vec3 pos = { x,0,z };
-				chunk_map[pos] = std::make_unique<Chunk>(pos);
+				chunk_map[pos] = std::make_shared<Chunk>(pos);
 			}
 		}
+
+		chunk_map[{0, 0, 0}]->SetEmpty();
+		chunk_map[{0,1,0}] = std::make_shared<Chunk>(glm::vec3{0,1,0});
 	}
 
 	void World::GenerateNewChunks(const glm::vec3& camera_position)
@@ -80,25 +84,79 @@ namespace MinecraftClone
 
 	bool World::ChunkHasNeighbor(const glm::vec3& chunk_position, Sides side)
 	{
-		// Temporal
+		if (side == Sides::Top)
+			return chunk_map[{chunk_position.x, chunk_position.y + 1, chunk_position.z}] != nullptr;
+
+		if (side == Sides::Bottom)
+			return chunk_map[{chunk_position.x, chunk_position.y - 1, chunk_position.z}] != nullptr;
+
+		if (side == Sides::Left)
+			return chunk_map[{chunk_position.x - 1, chunk_position.y, chunk_position.z}] != nullptr;
+
+		if (side == Sides::Right)
+			return chunk_map[{chunk_position.x + 1, chunk_position.y, chunk_position.z}] != nullptr;
+
+		if (side == Sides::Back)
+			return chunk_map[{chunk_position.x, chunk_position.y, chunk_position.z - 1}] != nullptr;
+
+		if (side == Sides::Front)
+			return chunk_map[{chunk_position.x, chunk_position.y, chunk_position.z + 1}] != nullptr;
+
 		return false;
 	}
 
-	void World::DrawChunk(Window* window, const glm::vec3& position)
+	std::shared_ptr<Chunk> World::NeighboringChunk(const glm::vec3 chunk_position, Sides side)
 	{
-		float fov = 90.0f;
-		float zNear = 0.1f;
-		float zFar = 10000.0f;
-		glm::mat4 projection = glm::perspective(fov, window->GetAspectRatio(), zNear, zFar);
+		if (side == Sides::Top)
+			return chunk_map[{chunk_position.x, chunk_position.y + 1, chunk_position.z}];
 
-		auto& chunk = chunk_map[position];
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), chunk->GetPosition() * glm::vec3(Chunk::GetSize()));
+		if (side == Sides::Bottom)
+			return chunk_map[{chunk_position.x, chunk_position.y - 1, chunk_position.z}];
 
-		glm::mat4 view = player.GetView();
+		if (side == Sides::Left)
+			return chunk_map[{chunk_position.x - 1, chunk_position.y, chunk_position.z}];
 
-		uint32_t vertex_count = chunk->CreateMesh();
+		if (side == Sides::Right)
+			return chunk_map[{chunk_position.x + 1, chunk_position.y, chunk_position.z}];
 
-		renderer.RenderChunk(window, model, view, projection, chunk->GetVao(), vertex_count);
+		if (side == Sides::Back)
+			return chunk_map[{chunk_position.x, chunk_position.y, chunk_position.z - 1}];
+
+		if (side == Sides::Front)
+			return chunk_map[{chunk_position.x, chunk_position.y, chunk_position.z + 1}];
+	}
+
+	std::shared_ptr<Chunk> World::GetChunk(const glm::vec3& chunk_position)
+	{
+		return chunk_map[chunk_position];
+	}
+
+	bool World::IsNeighborSolidBlock(const glm::vec3& chunk_position, const glm::vec3& block_position, Sides side)
+	{
+		if (!ChunkHasNeighbor(chunk_position, side))
+			return false;
+
+		std::shared_ptr<Chunk> chunk = NeighboringChunk(chunk_position, side);
+
+		if (side == Sides::Top)
+			return chunk->GetBlock(block_position.x, 0, block_position.z).solid;
+
+		if (side == Sides::Bottom)
+			return chunk->GetBlock(block_position.x, Chunk::GetSize() - 1, block_position.z).solid;
+
+		if (side == Sides::Left)
+			return chunk->GetBlock(Chunk::GetSize() - 1, block_position.y, block_position.z).solid;
+
+		if (side == Sides::Right)
+			return chunk->GetBlock(0, block_position.y, block_position.z).solid;
+
+		if (side == Sides::Back)
+			return chunk->GetBlock(block_position.x, block_position.y, Chunk::GetSize() - 1).solid;
+
+		if (side == Sides::Front)
+			return chunk->GetBlock(block_position.x, block_position.y, 0).solid;
+
+		return false;
 	}
 
 	void World::UserInput(float dt)
