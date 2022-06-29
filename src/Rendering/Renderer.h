@@ -2,9 +2,7 @@
 
 #include "Shader.h"
 #include "Window.h"
-#include "../World/Block.h"
 #include "../World/Chunk.h"
-#include "../World/Player.h"
 #include "../World/Player.h"
 
 namespace MinecraftClone

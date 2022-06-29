@@ -2,6 +2,14 @@
 
 namespace MinecraftClone
 {
+	Ray::Ray(glm::vec3 origin, glm::vec3 direction)
+		: origin(origin), direction(direction)
+	{
+	}
+}
+
+namespace MinecraftClone
+{
 	World* World::instance = nullptr;
 
 	World::World()
@@ -139,22 +147,22 @@ namespace MinecraftClone
 		std::shared_ptr<Chunk> chunk = NeighboringChunk(chunk_position, side);
 
 		if (side == Sides::Top)
-			return chunk->GetBlock(block_position.x, 0, block_position.z).solid;
+			return chunk->GetBlock(block_position.x, 0, block_position.z).Solid;
 
 		if (side == Sides::Bottom)
-			return chunk->GetBlock(block_position.x, Chunk::GetSize() - 1, block_position.z).solid;
+			return chunk->GetBlock(block_position.x, Chunk::GetSize() - 1, block_position.z).Solid;
 
 		if (side == Sides::Left)
-			return chunk->GetBlock(Chunk::GetSize() - 1, block_position.y, block_position.z).solid;
+			return chunk->GetBlock(Chunk::GetSize() - 1, block_position.y, block_position.z).Solid;
 
 		if (side == Sides::Right)
-			return chunk->GetBlock(0, block_position.y, block_position.z).solid;
+			return chunk->GetBlock(0, block_position.y, block_position.z).Solid;
 
 		if (side == Sides::Back)
-			return chunk->GetBlock(block_position.x, block_position.y, Chunk::GetSize() - 1).solid;
+			return chunk->GetBlock(block_position.x, block_position.y, Chunk::GetSize() - 1).Solid;
 
 		if (side == Sides::Front)
-			return chunk->GetBlock(block_position.x, block_position.y, 0).solid;
+			return chunk->GetBlock(block_position.x, block_position.y, 0).Solid;
 
 		return false;
 	}

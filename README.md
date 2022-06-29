@@ -4,12 +4,8 @@ Minecraft clone made for educational purposes.
 
 # TODO
 
-- Classes for every type of cube, each one with their atlas coordinates.
+- Fix glitched textures (3 out of 4 side textures are flipped).
 - Placing/removing blocks.
 - Inventory.
 - Procedural terrain generation.
 - Lighting.
-
-# BUGS
-
-- Jumping doesn't work.

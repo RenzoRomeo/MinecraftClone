@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../core.h"
+#include "../../core.h"
 
 namespace MinecraftClone
 {
@@ -21,10 +21,12 @@ namespace MinecraftClone
 
 	struct Block
 	{
-		glm::vec2 atlas_coords = { 2,3 };
-		bool solid;
-
-		Block();
-		Block(const glm::vec2 atlasCoord);
+		glm::vec2 FrontAtlasCoord;
+		glm::vec2 BackAtlasCoord;
+		glm::vec2 TopAtlasCoord;
+		glm::vec2 BottomAtlasCoord;
+		glm::vec2 LeftAtlasCoord;
+		glm::vec2 RightAtlasCoord;
+		bool Solid;
 	};
 }

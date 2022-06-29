@@ -2,12 +2,15 @@
 
 #include "World.h"
 
+#include "Blocks/Grass.h"
+#include "Blocks/Air.h"
+
 namespace MinecraftClone
 {
 	Chunk::Chunk(const glm::vec3& position)
 		: position(position)
 	{
-		blocks = std::make_unique<std::array<Block, CHUNK_SIZE* CHUNK_SIZE* CHUNK_SIZE>>();
+		blocks = std::make_unique<std::array<std::unique_ptr<Block>, CHUNK_SIZE* CHUNK_SIZE* CHUNK_SIZE>>();
 
 		// Just a test
 		for (int i = 0; i < CHUNK_SIZE; i++)
@@ -16,9 +19,8 @@ namespace MinecraftClone
 			{
 				for (int k = 0; k < CHUNK_SIZE; k++)
 				{
-					int index = Chunk::Index(i, j, k);
-					blocks->at(index).atlas_coords = { 0,0 };
-					blocks->at(index).solid = true;
+					int index = Index(i, j, k);
+					blocks->at(index) = std::make_unique<Grass>();
 				}
 			}
 		}
@@ -45,37 +47,37 @@ namespace MinecraftClone
 			if (!IsBlockInside(x, y + 1, z))
 				return false;
 			else
-				return GetBlock(x, y + 1, z).solid;
+				return GetBlock(x, y + 1, z).Solid;
 
 		if (side == Sides::Bottom)
 			if (!IsBlockInside(x, y - 1, z))
 				return false;
 			else
-				return GetBlock(x, y - 1, z).solid;
+				return GetBlock(x, y - 1, z).Solid;
 
 		if (side == Sides::Left)
 			if (!IsBlockInside(x - 1, y, z))
 				return false;
 			else
-				return GetBlock(x - 1, y, z).solid;
+				return GetBlock(x - 1, y, z).Solid;
 
 		if (side == Sides::Right)
 			if (!IsBlockInside(x + 1, y, z))
 				return false;
 			else
-				return GetBlock(x + 1, y, z).solid;
+				return GetBlock(x + 1, y, z).Solid;
 
 		if (side == Sides::Back)
 			if (!IsBlockInside(x, y, z - 1))
 				return false;
 			else
-				return GetBlock(x, y, z - 1).solid;
+				return GetBlock(x, y, z - 1).Solid;
 
 		if (side == Sides::Front)
 			if (!IsBlockInside(x, y, z + 1))
 				return false;
 			else
-				return GetBlock(x, y, z + 1).solid;
+				return GetBlock(x, y, z + 1).Solid;
 
 		return false;
 	}
@@ -83,7 +85,9 @@ namespace MinecraftClone
 	const Block& Chunk::GetBlock(int x, int y, int z) const
 	{
 		int i = Index(x, y, z);
-		return blocks->at(i);
+		if (blocks->at(i))
+			return *(blocks->at(i));
+		return Air();
 	}
 
 	void Chunk::SetEmpty()
@@ -94,9 +98,8 @@ namespace MinecraftClone
 			{
 				for (int k = 0; k < CHUNK_SIZE; k++)
 				{
-					int index = Chunk::Index(i, j, k);
-					blocks->at(index).atlas_coords = { 0,0 };
-					blocks->at(index).solid = false;
+					int index = Index(i, j, k);
+					blocks->at(index) = nullptr;
 				}
 			}
 		}

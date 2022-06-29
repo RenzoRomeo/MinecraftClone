@@ -7,6 +7,14 @@
 
 namespace MinecraftClone
 {
+	struct Ray
+	{
+		Ray(glm::vec3 origin, glm::vec3 direction);
+
+		glm::vec3 origin;
+		glm::vec3 direction;
+	};
+
 	class World
 	{
 	public:
@@ -24,7 +32,9 @@ namespace MinecraftClone
 
 		bool IsNeighborSolidBlock(const glm::vec3& chunk_position, const glm::vec3& block_position, Sides side);
 
-		void AddCube(const Block& cube);
+		void RemoveCube(const glm::vec3 origin, const glm::vec3& direction);
+
+		void AddCube(const glm::vec3 origin, const glm::vec3& direction);
 
 		static glm::vec3 GetVx() { return { 1,0,0 }; }
 		static glm::vec3 GetVy() { return { 0,1,0 }; }
@@ -47,6 +57,7 @@ namespace MinecraftClone
 		void Falling(float dt);
 		void InitChunksAroundPlayer();
 		bool ChunkHasNeighbor(const glm::vec3& chunk_position, Sides side);
+
 		std::shared_ptr<Chunk> NeighboringChunk(const glm::vec3 chunk_position, Sides side);
 	};
 }

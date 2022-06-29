@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Block.h"
 #include "../core.h"
+
+#include "Blocks/Block.h"
 
 namespace MinecraftClone
 {
@@ -33,7 +34,7 @@ namespace MinecraftClone
 		static const int BLOCK_COUNT = CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE;
 
 		glm::vec3 position;
-		std::unique_ptr<std::array<Block, CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE>> blocks;
+		std::unique_ptr<std::array<std::unique_ptr<Block>, CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE>> blocks;
 
 	private:
 		static int Index(int x, int y, int z);

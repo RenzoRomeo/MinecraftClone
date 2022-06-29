@@ -163,7 +163,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Libraries\include\glm\detail\glm.cpp" />
-    <ClCompile Include="src\World\Block.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\Game.cpp" />
@@ -172,6 +171,8 @@
     <ClCompile Include="src\Rendering\Shader.cpp" />
     <ClCompile Include="src\stb_image.cpp" />
     <ClCompile Include="src\Rendering\Window.cpp" />
+    <ClCompile Include="src\World\Blocks\Air.cpp" />
+    <ClCompile Include="src\World\Blocks\Grass.cpp" />
     <ClCompile Include="src\World\Chunk.cpp" />
     <ClCompile Include="src\World\Player.cpp" />
     <ClCompile Include="src\World\World.cpp" />
@@ -470,6 +471,8 @@
     <ClInclude Include="src\Rendering\Renderer.h" />
     <ClInclude Include="src\Rendering\Shader.h" />
     <ClInclude Include="src\Rendering\Window.h" />
+    <ClInclude Include="src\World\Blocks\Air.h" />
+    <ClInclude Include="src\World\Blocks\Grass.h" />
     <ClInclude Include="src\World\Chunk.h" />
     <ClInclude Include="src\World\Player.h" />
     <ClInclude Include="src\World\World.h" />
@@ -615,7 +618,7 @@
     <None Include="res\shaders\cubeVertex.shader" />
     <None Include="res\shaders\fragment.shader" />
     <None Include="res\shaders\vertex.shader" />
-    <None Include="src\World\Block.h" />
+    <None Include="src\World\Blocks\Block.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

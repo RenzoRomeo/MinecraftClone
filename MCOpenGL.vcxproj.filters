@@ -42,9 +42,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\World\Block.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="src\World\World.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
@@ -55,6 +52,12 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="src\World\Player.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\World\Blocks\Grass.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\World\Blocks\Air.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
@@ -947,6 +950,12 @@
     <ClInclude Include="src\World\Player.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="src\World\Blocks\Grass.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="src\World\Blocks\Air.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\include\glm\detail\func_common.inl">
@@ -1361,6 +1370,6 @@
     <None Include="res\shaders\fragment.shader" />
     <None Include="res\shaders\cubeVertex.shader" />
     <None Include="res\shaders\cubeFragment.shader" />
-    <None Include="src\World\Block.h" />
+    <None Include="src\World\Blocks\Block.h" />
   </ItemGroup>
 </Project>

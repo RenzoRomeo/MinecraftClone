@@ -68,43 +68,43 @@ namespace MinecraftClone
 
 					const Block& block = chunk.GetBlock(x, y, z);
 
-					if (!block.solid)
+					if (!block.Solid)
 						continue;
 
 					if (!chunk.HasSolidNeighbor(x, y, z, Sides::Front) && !world->IsNeighborSolidBlock(chunk.GetPosition(), { x,y,z }, Sides::Front))
 						for (int i = 0; i < 6; i++)
 						{
-							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], block.atlas_coords });
+							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], block.FrontAtlasCoord });
 						}
 
 					if (!chunk.HasSolidNeighbor(x, y, z, Sides::Back) && !world->IsNeighborSolidBlock(chunk.GetPosition(), { x,y,z }, Sides::Back))
 						for (int i = 2 * 6; i < (2 + 1) * 6; i++)
 						{
-							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], block.atlas_coords });
+							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], block.BackAtlasCoord });
 						}
 
 					if (!chunk.HasSolidNeighbor(x, y, z, Sides::Bottom) && !world->IsNeighborSolidBlock(chunk.GetPosition(), { x,y,z }, Sides::Bottom))
 						for (int i = 5 * 6; i < (5 + 1) * 6; i++)
 						{
-							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], block.atlas_coords });
+							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], block.BottomAtlasCoord });
 						}
 
 					if (!chunk.HasSolidNeighbor(x, y, z, Sides::Top) && !world->IsNeighborSolidBlock(chunk.GetPosition(), { x,y,z }, Sides::Top))
 						for (int i = 4 * 6; i < (4 + 1) * 6; i++)
 						{
-							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], block.atlas_coords });
+							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], block.TopAtlasCoord });
 						}
 
 					if (!chunk.HasSolidNeighbor(x, y, z, Sides::Left) && !world->IsNeighborSolidBlock(chunk.GetPosition(), { x,y,z }, Sides::Left))
 						for (int i = 3 * 6; i < (3 + 1) * 6; i++)
 						{
-							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], block.atlas_coords });
+							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], block.LeftAtlasCoord });
 						}
 
 					if (!chunk.HasSolidNeighbor(x, y, z, Sides::Right) && !world->IsNeighborSolidBlock(chunk.GetPosition(), { x,y,z }, Sides::Right))
 						for (int i = 1 * 6; i < (1 + 1) * 6; i++)
 						{
-							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], block.atlas_coords });
+							cube_vertices.push_back({ internal_position + vertices[cubeElements[i]], texCoords[i % 6], block.RightAtlasCoord });
 						}
 				}
 			}
