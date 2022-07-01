@@ -1,6 +1,6 @@
 # MinecraftClone
 
-Minecraft clone made for educational purposes.
+Minecraft clone made with the purpose of learning the OpenGL API.
 
 # TODO
 
