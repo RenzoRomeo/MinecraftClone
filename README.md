@@ -1,6 +1,6 @@
 # MinecraftClone
 
-Minecraft clone made with the purpose of learning the OpenGL API.
+This is just a toy project made with the purpose of learning the OpenGL graphics API.
 
 # TODO
 
